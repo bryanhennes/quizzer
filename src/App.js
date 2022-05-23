@@ -3,18 +3,22 @@ import LoginForm from "./LoginForm";
 import { db, auth } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import { collection, getDocs, addDoc } from "firebase/firestore";
+import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate } from "react-router-dom";
+import Stylesheet from "./Stylesheet";
+import Register from "./Register";
+import Login from "./Login";
+import Profile from "./Profile";
+
 
 
 
 function App() {
-  const register = async () => {
-    try{
-      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-      console.log(user);
-    }catch (error){
-      console.log(error.message);
-    }
-  };
+
+
+
+  const goToRegister = () => {
+  
+  }
 
   const login = async () => {
     try{
@@ -60,33 +64,28 @@ function App() {
 
   return (
     <>
-      <div className="registerUser">
-        <h3>Register User</h3>
-        <input placeholder="Email..." onChange={(e) => {
-          setRegisterEmail(e.target.value);
-        }}/>
-        <input placeholder="Password..." onChange={(e) => {
-          setRegisterPassword(e.target.value);
-        }}/>
-        <button onClick={register}>Create User</button> 
-      </div>
-
-      <div className="login">
-        <h3>Login</h3>
-        <input placeholder="Email..." onChange={(e) => {
-          setloginEmail(e.target.value);
-        }}/>
-        <input placeholder="Password..." onChange={(e) => {
-          setloginPassword(e.target.value);
-        }}/>
-        <button onClick={login}>Login</button>
-
-        <h4>User Logged In:</h4>
-        <p>{user?.email}</p>
-
-        <button onClick={logout}>Sign Out</button>
-      </div>
+    <Stylesheet primary ={true}/>
+    <Router>
+    <nav>
+      <div className="topnav">
     
+      <Link to="/">Login</Link>
+      <Link to="/Profile">Profile</Link>
+      <Link to="/Register">Sign Up</Link>
+      </div>
+    </nav>
+    <div className="appName">Quizzer</div>
+    
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/Profile" element={<Profile />} />
+      <Route path="/Register" element={<Register />} />
+    </Routes>
+    </Router>
+
+    <div className ="mainPage">
+
+    </div>
 
     </>
   )

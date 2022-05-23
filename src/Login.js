@@ -33,10 +33,8 @@ export default function Login() {
 
   return (
     <div className="mainPage">
-      <div className="Welcome">
-      <h2>Welcome, <span>{user?.email}</span></h2>
-      </div>
       <Stylesheet primary ={true}/>
+        <br></br>
         <h3>Login</h3>
         <input placeholder="Email..." onChange={(e) => {
           setloginEmail(e.target.value);
@@ -46,16 +44,15 @@ export default function Login() {
           setloginPassword(e.target.value);
         }}/>
         <br></br>
+        <br></br>
         <button onClick={login}>Login</button>
 
-        <h4>User Logged In:</h4>
-        <p>{user?.email}</p>
 
-        <button onClick={logout} id="signout">Sign Out</button>
+        {/*<button onClick={logout} id="signout">Sign Out</button>*/}
         <br></br>
         <br></br>
         <div className="registerbtn">
-        <button onClick={()=>{navigate('/Register')}}>Register</button>
+        {/*<button onClick={()=>{navigate('/Register')}}>Register</button>*/}
         </div>
       </div>
   )

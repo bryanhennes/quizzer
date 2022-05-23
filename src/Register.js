@@ -25,7 +25,8 @@ export default function Register() {
     };
   return (
     <div className="registerUser">
-        <h3>Register User</h3>
+        <br></br>
+        <h3>Sign Up</h3>
         <input placeholder="Email..." onChange={(e) => {
           setRegisterEmail(e.target.value);
         }}/>
@@ -34,7 +35,8 @@ export default function Register() {
           setRegisterPassword(e.target.value);
         }}/>
         <br></br>
-        <button onClick={register}>Register</button> 
+        <br></br>
+        <button onClick={register}>Sign Up</button> 
       </div>
   )
 }
