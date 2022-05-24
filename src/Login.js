@@ -5,17 +5,22 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import Stylesheet from "./Stylesheet";
 
 
+
 export default function Login() {
   const [loginEmail, setloginEmail] = useState("");
   const [loginPassword, setloginPassword] = useState("");
   let navigate = useNavigate();
 
+
+
+
   const login = async () => {
     try{
       const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       console.log(user);
+      navigate('/Home');
     }catch (error){
-      console.log(error.message);
+      alert(error.message);
     }
   }
 
@@ -40,7 +45,7 @@ export default function Login() {
           setloginEmail(e.target.value);
         }}/>
         <br></br>
-        <input placeholder="Password..." onChange={(e) => {
+        <input type="password" placeholder="Password..." onChange={(e) => {
           setloginPassword(e.target.value);
         }}/>
         <br></br>
@@ -48,7 +53,7 @@ export default function Login() {
         <button onClick={login}>Login</button>
 
 
-        {/*<button onClick={logout} id="signout">Sign Out</button>*/}
+       
         <br></br>
         <br></br>
         <div className="registerbtn">

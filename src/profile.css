@@ -1,0 +1,12 @@
+img {
+    border-radius: 50%;
+}
+
+.profile {  
+    width: 50%;
+    margin: auto;
+    padding: 200px;
+    text-align: center;
+    font-family: 'open-sans';
+    overflow-y:auto;
+}

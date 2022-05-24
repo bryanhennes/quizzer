@@ -1,0 +1,8 @@
+.mainHome {
+    overflow-y:auto;
+    width: 50%;
+    margin: auto;
+    padding: 200px;
+    text-align: center;
+    font-family: 'open-sans';
+}

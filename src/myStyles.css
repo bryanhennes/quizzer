@@ -2,8 +2,29 @@
     color: orange;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 html {
-  background-image: url("90sbackground.jpg");
+  overflow-y:scroll;
+  background-image: url("background3.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -29,6 +50,24 @@ html {
 
 }
 
+.logoButton  {
+  overflow: hidden;
+  margin: -8px;
+  background-color: #FF013C;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 50%; /* Full width */
+  font-family: 'open-sans';
+
+}
+
+.topnav .signoutButton:hover {
+  background: #00E6F6;
+  color: black;
+}
+
+
+
 /* Style the links inside the navigation bar */
 .topnav a {
   float: right;
@@ -45,6 +84,19 @@ html {
   color: black;
 }
 
+.logoButton a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 26px;
+  text-decoration: none;
+}
+
+.logoButton a:hover {
+  background: #00E6F6;
+  color: black;
+}
 
 /*main login/signin page*/
 
@@ -79,7 +131,7 @@ button:after {
   touch-action: manipulation;
 }
 
-button:after {
+.mainPage button:after {
   --slice-0: inset(50% 50% 50% 50%);
   --slice-1: inset(80% -6px 0 0);
   --slice-2: inset(50% -6px 30% 0);
@@ -99,7 +151,7 @@ button:after {
   clip-path: var(--slice-0);
 }
 
-button:hover:after {
+.mainPage button:hover:after {
   animation: 1s glitch;
   animation-timing-function: steps(2, end);
 }
@@ -152,8 +204,8 @@ button:hover:after {
 }
 
 @media (min-width: 768px) {
-  button,
-  button:after {
+  .mainPage button,
+  .mainPage button:after {
     width: 200px;
     height: 86px;
     line-height: 88px;
@@ -172,7 +224,7 @@ button:hover:after {
 
 /* CSS */
 .registerUser button,
-button:after {
+.registerUser button:after {
 width: 150px;
 height: 76px;
 line-height: 78px;
@@ -190,7 +242,7 @@ user-select: none;
 touch-action: manipulation;
 }
 
-button:after {
+.registerUser button:after {
 --slice-0: inset(50% 50% 50% 50%);
 --slice-1: inset(80% -6px 0 0);
 --slice-2: inset(50% -6px 30% 0);
@@ -210,7 +262,7 @@ text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
 clip-path: var(--slice-0);
 }
 
-button:hover:after {
+.registerUser button:hover:after {
 animation: 1s glitch;
 animation-timing-function: steps(2, end);
 }
@@ -263,121 +315,28 @@ animation-timing-function: steps(2, end);
 }
 
 @media (min-width: 768px) {
-button,
-button:after {
+.registerUser button,
+.registerUser button:after {
   width: 200px;
   height: 86px;
   line-height: 88px;
 }
 }
 
-/*register button*/
-.registerBtn  {
-  margin: auto;
+
+
+/* Profile Page   */
+.profile {  
   width: 50%;
-  padding: 10px;
+  margin: auto;
+  padding: 200px;
   text-align: center;
   font-family: 'open-sans';
 }
 
-
-/* CSS */
-.registerBtn button,
-button:after {
-width: 150px;
-height: 76px;
-line-height: 78px;
-font-size: 20px;
-font-family: 'Bebas Neue', sans-serif;
-background: linear-gradient(45deg, transparent 5%, #6f01ff 5%);
-border: 0;
-color: #fff;
-letter-spacing: 3px;
-box-shadow: 6px 0px 0px #00E6F6;
-outline: transparent;
-position: relative;
-user-select: none;
--webkit-user-select: none;
-touch-action: manipulation;
+img {
+  float: left;
+  border-radius: 50%;
+  
 }
 
-button:after {
---slice-0: inset(50% 50% 50% 50%);
---slice-1: inset(80% -6px 0 0);
---slice-2: inset(50% -6px 30% 0);
---slice-3: inset(10% -6px 85% 0);
---slice-4: inset(40% -6px 43% 0);
---slice-5: inset(80% -6px 5% 0);
-
-content: 'QUIZZER';
-display: block;
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #ff01ff 5%);
-text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
-clip-path: var(--slice-0);
-}
-
-button:hover:after {
-animation: 1s glitch;
-animation-timing-function: steps(2, end);
-}
-
-@keyframes glitch {
-0% {
-  clip-path: var(--slice-1);
-  transform: translate(-20px, -10px);
-}
-10% {
-  clip-path: var(--slice-3);
-  transform: translate(10px, 10px);
-}
-20% {
-  clip-path: var(--slice-1);
-  transform: translate(-10px, 10px);
-}
-30% {
-  clip-path: var(--slice-3);
-  transform: translate(0px, 5px);
-}
-40% {
-  clip-path: var(--slice-2);
-  transform: translate(-5px, 0px);
-}
-50% {
-  clip-path: var(--slice-3);
-  transform: translate(5px, 0px);
-}
-60% {
-  clip-path: var(--slice-4);
-  transform: translate(5px, 10px);
-}
-70% {
-  clip-path: var(--slice-2);
-  transform: translate(-10px, 10px);
-}
-80% {
-  clip-path: var(--slice-5);
-  transform: translate(20px, -10px);
-}
-90% {
-  clip-path: var(--slice-1);
-  transform: translate(-10px, 0px);
-}
-100% {
-  clip-path: var(--slice-1);
-  transform: translate(0);
-}
-}
-
-@media (min-width: 768px) {
-button,
-button:after {
-  width: 200px;
-  height: 86px;
-  line-height: 88px;
-}
-}
