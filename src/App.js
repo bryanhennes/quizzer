@@ -8,13 +8,27 @@ import Stylesheet from "./Stylesheet";
 import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
+import NavBarSignedIn from "./NavBarSignedIn";
+import NavBarNotSignedIn from "./NavBarNotSignedIn";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 
 function App() {
 
+  toast.configure();
+  /* try to make this conditional formatting work
 
+    {(user != null) ? (
+        <NavBarSignedIn />
+      ):(
+        <h1>Not Logged in</h1>
+      )}
+
+
+  */
 
   const goToRegister = () => {
   
@@ -62,28 +76,20 @@ function App() {
     getUsers();
   }, [])
 
+ 
   return (
     <>
     <Stylesheet primary ={true}/>
-    <Router>
-    <nav>
-      <div className="topnav">
+    {/*show different options on nav bar depending on whether or not a user is logged in*/}
+    {(user != null) ? (
+        <NavBarSignedIn />
+      ):(
+        <NavBarNotSignedIn />
+      )}
     
-      <Link to="/">Login</Link>
-      <Link to="/Profile">Profile</Link>
-      <Link to="/Register">Sign Up</Link>
-      </div>
-    </nav>
-    <div className="appName">Quizzer</div>
-    
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/Profile" element={<Profile />} />
-      <Route path="/Register" element={<Register />} />
-    </Routes>
-    </Router>
 
     <div className ="mainPage">
+      
 
     </div>
 
