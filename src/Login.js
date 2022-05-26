@@ -3,6 +3,8 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { db, auth } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import Stylesheet from "./Stylesheet";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -12,6 +14,20 @@ export default function Login() {
   let navigate = useNavigate();
 
 
+  //translate firebase error codes to more readable messages
+  const notify = (message) => {
+    const map = {};
+    map['auth/user-not-found'] = "Account with that email does not exist";
+    map['auth/wrong-password'] = 'Password is incorrect'
+    map['auth/invalid-email'] = 'Please enter a valid email';
+    map['auth/invalid-password'] = 'Password must be at least 6 characters';
+    map['auth/email-already-in-use'] = "An account with that email already exists";
+    map['auth/internal-error'] = 'Enter valid credentials';
+    toast(map[message]);
+  }
+
+  
+
 
 
   const login = async () => {
@@ -20,7 +36,8 @@ export default function Login() {
       console.log(user);
       navigate('/Home');
     }catch (error){
-      alert(error.message);
+      console.log(error.code);
+      notify(error.code);
     }
   }
 
@@ -37,6 +54,7 @@ export default function Login() {
 });
 
   return (
+    
     <div className="mainPage">
       <Stylesheet primary ={true}/>
         <br></br>
@@ -50,14 +68,23 @@ export default function Login() {
         }}/>
         <br></br>
         <br></br>
+        <div className="LoginButton">
         <button onClick={login}>Login</button>
-
-
-       
+        </div>
         <br></br>
         <br></br>
-        <div className="registerbtn">
-        {/*<button onClick={()=>{navigate('/Register')}}>Register</button>*/}
+        <div className="toast">
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         </div>
       </div>
   )
