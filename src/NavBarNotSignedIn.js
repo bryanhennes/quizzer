@@ -5,6 +5,7 @@ import Login from "./Login";
 import Profile from "./Profile";
 import Home from "./Home";
 import Stylesheet from "./Stylesheet";
+import LoginForm from "./LoginForm";
 
 export default function () {
   return (
@@ -26,6 +27,7 @@ export default function () {
       <Route path="/Login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
       <Route path="/Home" element={<Home />} />
+      <Route path="/LoginForm" element={<LoginForm />} />
     </Routes>
     </Router>
     </>

@@ -24,9 +24,8 @@
 
 html {
   overflow-y:scroll;
-  background-image: url("background3.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: rgb(63,94,251);
+  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
 }
 
 
@@ -74,7 +73,7 @@ html {
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 26px;
+  padding: 30px 26px;
   text-decoration: none;
 }
 
@@ -111,8 +110,9 @@ html {
 }
 
 
+
 /* CSS */
-.mainPage button,
+.LoginButton button,
 button:after {
   width: 150px;
   height: 76px;
@@ -129,9 +129,10 @@ button:after {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  cursor:pointer;
 }
 
-.mainPage button:after {
+.LoginButton button:after {
   --slice-0: inset(50% 50% 50% 50%);
   --slice-1: inset(80% -6px 0 0);
   --slice-2: inset(50% -6px 30% 0);
@@ -151,7 +152,7 @@ button:after {
   clip-path: var(--slice-0);
 }
 
-.mainPage button:hover:after {
+.LoginButton button:hover:after {
   animation: 1s glitch;
   animation-timing-function: steps(2, end);
 }
@@ -204,8 +205,8 @@ button:after {
 }
 
 @media (min-width: 768px) {
-  .mainPage button,
-  .mainPage button:after {
+  .LoginButton button,
+  .LoginButton button:after {
     width: 200px;
     height: 86px;
     line-height: 88px;
@@ -223,8 +224,8 @@ button:after {
 
 
 /* CSS */
-.registerUser button,
-.registerUser button:after {
+.RegisterButton button,
+.RegisterButton button:after {
 width: 150px;
 height: 76px;
 line-height: 78px;
@@ -242,7 +243,7 @@ user-select: none;
 touch-action: manipulation;
 }
 
-.registerUser button:after {
+.RegisterButton button:after {
 --slice-0: inset(50% 50% 50% 50%);
 --slice-1: inset(80% -6px 0 0);
 --slice-2: inset(50% -6px 30% 0);
@@ -262,7 +263,7 @@ text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
 clip-path: var(--slice-0);
 }
 
-.registerUser button:hover:after {
+.RegisterButton button:hover:after {
 animation: 1s glitch;
 animation-timing-function: steps(2, end);
 }
@@ -315,8 +316,8 @@ animation-timing-function: steps(2, end);
 }
 
 @media (min-width: 768px) {
-.registerUser button,
-.registerUser button:after {
+.RegisterButton button,
+.RegisterButton button:after {
   width: 200px;
   height: 86px;
   line-height: 88px;
@@ -334,9 +335,252 @@ animation-timing-function: steps(2, end);
   font-family: 'open-sans';
 }
 
-img {
+.card {
+  box-shadow: 0 4px 8px 0 rgb(250, 249, 249);
+  width: 600px;
+  margin: auto;
+  position: absolute;
+ 
+  top: auto;
+  text-align: center;
+  background-color: #FF013C;
+}
+
+
+
+.profile img {
   float: left;
   border-radius: 50%;
   
 }
+
+/* LoginForm */
+
+.form-inner {
+  width: 50%;
+  margin: auto;
+  padding: 200px;
+  text-align: center;
+  font-family: 'open-sans';
+}
+
+
+.form-inner input {
+  margin: auto;
+}
+
+
+.form-inner button,
+.form-inner button:after {
+width: 150px;
+height: 76px;
+line-height: 78px;
+font-size: 20px;
+font-family: 'Bebas Neue', sans-serif;
+background: linear-gradient(45deg, transparent 5%, #FF013C 5%);
+border: 0;
+color: #fff;
+letter-spacing: 3px;
+box-shadow: 6px 0px 0px #00E6F6;
+outline: transparent;
+position: relative;
+user-select: none;
+-webkit-user-select: none;
+touch-action: manipulation;
+}
+
+.form-inner button:after {
+--slice-0: inset(50% 50% 50% 50%);
+--slice-1: inset(80% -6px 0 0);
+--slice-2: inset(50% -6px 30% 0);
+--slice-3: inset(10% -6px 85% 0);
+--slice-4: inset(40% -6px 43% 0);
+--slice-5: inset(80% -6px 5% 0);
+
+content: 'QUIZZER';
+display: block;
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #FF013C 5%);
+text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
+clip-path: var(--slice-0);
+}
+
+.form-inner button:hover:after {
+animation: 1s glitch;
+animation-timing-function: steps(2, end);
+}
+
+@keyframes glitch {
+0% {
+  clip-path: var(--slice-1);
+  transform: translate(-20px, -10px);
+}
+10% {
+  clip-path: var(--slice-3);
+  transform: translate(10px, 10px);
+}
+20% {
+  clip-path: var(--slice-1);
+  transform: translate(-10px, 10px);
+}
+30% {
+  clip-path: var(--slice-3);
+  transform: translate(0px, 5px);
+}
+40% {
+  clip-path: var(--slice-2);
+  transform: translate(-5px, 0px);
+}
+50% {
+  clip-path: var(--slice-3);
+  transform: translate(5px, 0px);
+}
+60% {
+  clip-path: var(--slice-4);
+  transform: translate(5px, 10px);
+}
+70% {
+  clip-path: var(--slice-2);
+  transform: translate(-10px, 10px);
+}
+80% {
+  clip-path: var(--slice-5);
+  transform: translate(20px, -10px);
+}
+90% {
+  clip-path: var(--slice-1);
+  transform: translate(-10px, 0px);
+}
+100% {
+  clip-path: var(--slice-1);
+  transform: translate(0);
+}
+}
+
+@media (min-width: 768px) {
+.form-inner button,
+.form-inner button:after {
+  width: 200px;
+  height: 86px;
+  line-height: 88px;
+}
+}
+
+/*Login Page Error Toast*/
+
+.mainPage, .registerUser{
+  --toastify-color-light: #121212;
+  --toastify-color-dark: #121212;
+  --toastify-color-info: #3498db;
+  --toastify-color-success: #07bc0c;
+  --toastify-color-warning: #f1c40f;
+  --toastify-color-error: #e74c3c;
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+  --toastify-icon-color-info: var(--toastify-color-info);
+  --toastify-icon-color-success: var(--toastify-color-success);
+  --toastify-icon-color-warning: var(--toastify-color-warning);
+  --toastify-icon-color-error: var(--toastify-color-error);
+
+  --toastify-toast-width: 320px;
+  --toastify-toast-background: rgb(255, 255, 255);
+  --toastify-toast-min-height: 64px;
+  --toastify-toast-max-height: 800px;
+  --toastify-font-family: sans-serif;
+  --toastify-z-index: 9999;
+
+  --toastify-text-color-light: #fff;
+  --toastify-text-color-dark: #fff;
+  --toastify-text-color-info: #fff;
+  --toastify-text-color-success: #fff;
+  --toastify-text-color-warning: #fff;
+  --toastify-text-color-error: rgb(255, 255, 255);
+
+  --toastify-spinner-color: #616161;
+  --toastify-spinner-color-empty-area: #e0e0e0;
+
+
+  --toastify-color-progress-light: linear-gradient(
+    to right,
+    #4cd964,
+    #5ac8fa,
+    #007aff,
+    #34aadc,
+    #5856d6,
+    #ff2d55
+  );
+
+  --toastify-color-progress-dark: #bb86fc;
+  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-color-progress-success: var(--toastify-color-success);
+  --toastify-color-progress-warning: var(--toastify-color-warning);
+  --toastify-color-progress-error: var(--toastify-color-error);
+}
+
+.profileInformation {
+  position: relative;
+}
+
+/* Home page display stuff   */
+
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 200px;
+  border: 1px solid #f1f1f1;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card img {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  background-color: rgb(8, 0, 0);
+  color: black;
+}
+
+.flip-card button {
+  vertical-align: middle;
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: #FF013C;
+  color: white;
+  text-align: center;
+  transform: rotateY(180deg);
+}
+
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
+import LoginForm from "./LoginForm";
 import Home from "./Home";
 import Profile from "./Profile";
 import Stylesheet from "./Stylesheet";
@@ -32,6 +33,7 @@ export default function () {
     <Routes>
       <Route path="/Profile" element={<Profile />} />
       <Route path="/Home" element={<Home />} />
+      <Route path="/LoginForm" element={<LoginForm />} />
       
     </Routes>
     </Router>
