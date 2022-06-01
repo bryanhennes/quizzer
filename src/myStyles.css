@@ -521,7 +521,8 @@ animation-timing-function: steps(2, end);
 
 
 .pokeCard1 .card{
-  background-color: transparent;
+  background-color:#ff2d55;
+  cursor: pointer;
   width: 300px;
   height: 200px;
   border: none;
@@ -532,7 +533,8 @@ animation-timing-function: steps(2, end);
 }
 
 .pokeCard2 .card{
-  background-color: transparent;
+  background-color:#ff2d55;
+  cursor: pointer;
   width: 300px;
   height: 200px;
   border: none;

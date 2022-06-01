@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, DropdownButton, Dropdown } from "react";
 import { db, auth } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import { collection, getDocs, addDoc } from "firebase/firestore";
@@ -25,6 +25,8 @@ function App() {
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
+
+  
 });
 
 
@@ -38,12 +40,9 @@ function App() {
       ):(
         <NavBarNotSignedIn />
       )}
+
     
-
-    <div className ="mainPage">
-      
-
-    </div>
+    
 
     </>
   )

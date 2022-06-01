@@ -6,6 +6,7 @@ import Profile from "./Profile";
 import Home from "./Home";
 import Stylesheet from "./Stylesheet";
 import LoginForm from "./LoginForm";
+import PokemonWeight from "./PokemonWeight";
 
 export default function () {
   return (
@@ -28,6 +29,7 @@ export default function () {
       <Route path="/Register" element={<Register />} />
       <Route path="/Home" element={<Home />} />
       <Route path="/LoginForm" element={<LoginForm />} />
+      <Route path="/PokemonWeight" element={<PokemonWeight />} />
     </Routes>
     </Router>
     </>

@@ -23,7 +23,8 @@ export default function Register() {
     map['auth/invalid-email'] = 'Please enter a valid email';
     map['auth/invalid-password'] = 'Password must be at least 6 characters';
     map['auth/email-already-in-use'] = "An account with that email already exists";
-    map['auth/internal-error'] = 'Enter valid credentials';
+    map['auth/internal-error'] = 'Please enter valid credentials';
+    map['auth/weak-password'] = 'Password must be at least 8 characters';
     toast(map[message]);
   }
 
