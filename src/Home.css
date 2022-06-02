@@ -119,3 +119,14 @@
     padding: 12px 50px;
   }
 }
+
+.mainHome button{
+  cursor:pointer;
+}
+
+.card img {
+  width: 300px;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Stylesheet from './HomeStyleSheet';
-import { db, auth } from "./firebase-config";
+import { db, auth, realDb } from "./firebase-config";
+import {getDatabase, ref, set, child, update, remove, onValue, get} from "firebase/database";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate } from "react-router-dom";
 import pic from './pokemon.jpg';
@@ -11,12 +12,37 @@ export default function Home() {
     useEffect(()=> {
         onAuthStateChanged(auth, (currentUser) => {
           setUser(currentUser);
+          readTotal();
+          console.log(total);
         });
     });
+    const [pokeName, setName] = useState("");
+    const [pokeWeight, setWeight] = useState("");
+    const [total, setTotal] = useState(0);
 
     const goToGame = () => {
       navigate('/PokemonWeight');
     }
+
+    const readTotal = async () => {
+      const pokeRef = ref(realDb, 'pokemon/');
+      onValue(pokeRef, (snapshot) => {
+        if(snapshot.exists()){
+          setTotal(snapshot.size);
+        }     
+    })
+  }
+
+  //temporary helper function to add pokemon to database
+  const pokeHelper = async () => {
+    const newtotal = total +1;
+    await set(ref(realDb, 'pokemon/' + newtotal),{
+      name: pokeName,
+      weight: Number(pokeWeight),
+    })
+    setName("");
+    setWeight("");
+  };
     
       const [user, setUser] = useState({});
 
@@ -39,6 +65,14 @@ export default function Home() {
         </div>
       </div>
     </div>
+    <br></br>
+    <button className="pokeHelperButton" onClick={pokeHelper}>Add Pokemon</button>
+    <input type="text" placeholder="Pokemon name" value={pokeName} onChange={(e) => {
+          setName(e.target.value);
+        }}/>
+    <input type="number" placeholder="Pokemon weight" value={pokeWeight} onChange={(e) => {
+          setWeight(e.target.value);
+        }}/>
   </div>
     
     </>
