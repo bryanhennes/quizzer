@@ -30,7 +30,8 @@ export default function LoginForm({Login, error}) {
 				username: newUn,
 				country: newCountry,
         email: user?.email,
-        joindate: date
+        joindate: date, 
+        poke_highscore: 0,
       })
     };
 

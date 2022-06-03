@@ -17,10 +17,10 @@ export default function () {
       <div className="topnav">
       <Link to="/Login">Login</Link>
       <Link to="/Register">Sign Up</Link>
-      </div>
-      <div className="logoButton">
       <Link className="logoBtn" to="/Home">Quizzer</Link>
       </div>
+     
+      
     </nav>
 
     

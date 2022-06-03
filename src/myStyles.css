@@ -38,6 +38,7 @@ html {
   padding: 0px 20px;
 }
 
+
 .topnav  {
   overflow: hidden;
   margin: -8px;
@@ -46,8 +47,25 @@ html {
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
   font-family: 'open-sans';
+  height:45px;
 
 }
+.logoBtn {
+  right:84.73%;
+}
+
+.signedInLogoBtn {
+  right:86%;
+}
+
+.signOutButton {
+  left:5vw;
+  top:1px;
+ 
+}
+
+
+
 
 .logoButton  {
   overflow: hidden;
@@ -70,6 +88,8 @@ html {
 /* Style the links inside the navigation bar */
 .topnav a {
   float: right;
+  height: 45px;
+  position: relative;
   display: block;
   color: #f2f2f2;
   text-align: center;
@@ -77,18 +97,11 @@ html {
   text-decoration: none;
 }
 
-/* Change background on mouse-over */
-
-
-.logoButton a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 26px;
-  text-decoration: none;
+ .userNameDisplay {
+  position: relative;
+  right:10px;
+  bottom: 5px;
 }
-
 
 /*main login/signin page*/
 

@@ -48,7 +48,7 @@ export default function PokemonWeight() {
         setOldStreak(data?.poke_highscore);
       }
       else {
-        setHighscore(); //should set users poke highscore to 0 if it doesnt already exist in database
+        //should set users poke highscore to 0 if it doesnt already exist in database
       }   
   })
 }
@@ -64,6 +64,13 @@ export default function PokemonWeight() {
       displayPokemon();
     }
     else if(e.currentTarget.id === "poke2" && pokeWeight2 > pokeWeight1){
+      console.log("Correct");
+      setStreak(streak+1);
+      displayPokemon();
+    }
+
+    //if pokemon have equal weight and equal button is selected it should be correct
+    else if(e.currentTarget.id === "equal" && pokeWeight2 === pokeWeight1){
       console.log("Correct");
       setStreak(streak+1);
       displayPokemon();
@@ -96,6 +103,7 @@ export default function PokemonWeight() {
 
   //begin game
   const startGame = async () => {
+    setStreak(0);
     displayPokemon();
   }
 
@@ -137,6 +145,7 @@ const readData2 = async (num) => {
   return (
     <>
     <Stylesheet primary ={true}/>
+    <div className="gameArea">
     <div className="pokeCard1" id="poke1" onClick={checkWinner}>
       <div class="card">
       <img src={imgSrc}/>
@@ -156,6 +165,11 @@ const readData2 = async (num) => {
     <div className="startGame">
       <h1>Current Streak: {streak}</h1>
       <button className="startGameButton" onClick={startGame}>Start Game</button>
+    </div>
+
+    <div className="equalButton">
+      <button onClick={checkWinner} id="equal">Equal</button>
+    </div>
     </div>
     </>
   )

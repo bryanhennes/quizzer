@@ -1,3 +1,4 @@
+
 .mainHome {
     overflow-y:auto;
     width: 50%;
@@ -120,8 +121,42 @@
   }
 }
 
-.mainHome button{
+.gameArea {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  
+  width: 100%;
+  height: 80%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.mainHome {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translateX(-50%) translateY(calc(-50% - .5px));
+}
+
+.pokeHelperButton{
   cursor:pointer;
+  position: relative;
+  top:120px;
+}
+
+.mainHome input {
+  position: relative;
+  top:120px;
+}
+
+.flip-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
 }
 
 .card img {
@@ -133,9 +168,53 @@
 
 .startGame {
   margin:auto;
-  padding-top: 20px;
+  overflow-y:auto;
+  font-family: 'open-sans';
+  left:540px;
+  margin-top: 0;
+  top: 40px;
+  padding-top: 40px;
+  padding-bottom: 30px;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
 }
 .startGame button {
-  padding-top: 10px;
   cursor: pointer;
+  font-family: 'open-sans';
+  position: relative;
+  left:80px;
+  background-color: #FF013C;
+
+}
+
+.startGame button:hover {
+  background-color: #bf18f1;
+}
+
+.equalButton button {
+  position: relative;
+  font-family: 'open-sans';
+  cursor: pointer;
+  top:30vw;
+  left: 46.5vw;
+  height:50px;
+  width:100px;
+  background-color: #FF013C;
+}
+
+.equalButton button:hover{
+  background-color: #bf18f1;
+}
+
+.pokeCard1 {
+  position: relative;
+  left: 15vw;
+}
+
+.pokeCard2 {
+  position: relative;
+  left: 15vw;
 }

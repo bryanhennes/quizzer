@@ -16,6 +16,14 @@ export default function () {
     await signOut(auth);
   }
 
+  const [user, setUser] = useState({});
+
+  useEffect(()=> {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+});
+
   return (
     <>
     <Stylesheet primary ={true}/>
@@ -23,15 +31,15 @@ export default function () {
     <nav>
       <div className="topnav">
       <Link to="/Profile">
+      <span className="userNameDisplay">{user?.email}</span>
       <span className="material-symbols-outlined">
         account_circle
       </span>
       </Link>
-      <Link to="/Home" onClick={logout}>Sign Out</Link>
+      <Link className="signedInLogoBtn" to="/Home">Quizzer</Link>
+      <Link to="/Home" className="signOutButton" onClick={logout}>Sign Out</Link>
       </div>
-      <div className="logoButton">
-      <Link className="logoBtn" to="/Home">Quizzer</Link>
-      </div>
+     
     </nav>
    
     
