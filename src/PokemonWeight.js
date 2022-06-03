@@ -6,7 +6,7 @@ import {getDatabase, ref, set, child, update, remove, onValue, get} from "fireba
 import pic from './whopokemon.jpg';
 import Stylesheet from './HomeStyleSheet';
 import {storage} from './firebase-config';
-import { ref as sRef, getDownloadURL } from 'firebase/storage';
+import { ref as sRef, getDownloadURL, listAll } from 'firebase/storage';
 
 export default function PokemonWeight() {
 
@@ -14,12 +14,19 @@ export default function PokemonWeight() {
   const [pokeWeight1, setWeight] = useState("");
   const [pokeName2, setName2] = useState("");
   const [pokeWeight2, setWeight2] = useState("");
-  const [imgSrc, setImgSrc] = useState(pic);
+  const [imgSrc1, setImgSrc1] = useState(pic);
+  const [imgSrc2, setImgSrc2] = useState(pic);
   const [total, setTotal] = useState(0); //get total number of pokemon in database
   const [streak, setStreak] = useState(0); //keep track of user's streak
   const [oldStreak, setOldStreak] = useState(0); //get previous streak from user database
   const [url1, setUrl1] = useState("");
   const [url2, setUrl2] = useState("");
+  const [imgRef1, setRef1] = useState("");
+  const [imgRef2, setRef2] = useState("");
+  const[rand1, setRand1] = useState(0);
+  const[rand2, setRand2] = useState(0);
+  const imageMap = {};
+  const pokeMap = {};
 
   //get random number between 1 and total size of pokemon count in database to display randomly
   const getRand = () => {
@@ -29,40 +36,74 @@ export default function PokemonWeight() {
   }
 
 
+  //get random selection from pookemon map
+  const getRandomSelection = (collection) => {
+    var keys = Object.keys(collection);
+    var len = keys.length;
+    var rnd = Math.floor(Math.random()*len);
+    var key = keys[rnd];
+    return key;
+  }
+
+
   useEffect(()=> {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       readTotal();
       getPreviousHighScore();
+      listImages();
+      getPokemon();
+      
     });
   });
   const [user, setUser] = useState({});
 
   //display 2 randomly selected pokemon
-  const displayPokemon = async () => {
-    readData(getRand());
-    getDownload('Charizard');
-    readData2(getRand());
-    getDownload2('Charizard');
+  const displayPokemon = () => {
+    const selection1 = getRandomSelection(pokeMap);
+    const selection2 = getRandomSelection(pokeMap);
+    setImgSrc1(imageMap[selection1]);
+    setName(selection1);
+    setImgSrc2(imageMap[selection2]);
+    setName2(selection2);
   }
 
-  const getDownload = async (name) => {
-    const picRef = sRef(storage, `pokemon_images/${name}.png`);
-   
-    await getDownloadURL(picRef).then((e) => {
-      setUrl1(e);
+  //when pokemon page first loads, grab all download urls from pokemon images in firebase storage
+  //add them to an image map to be accessed during the game
+  const listImages = async () => {
+    const listRef= sRef(storage, 'pokemon_images/');
+    listAll(listRef).then((res) => {
+      res.prefixes.forEach((folderRef) => {
+        // All the prefixes under listRef.
+        // You may call listAll() recursively on them.
+      });
+      res.items.forEach((itemRef) => {
+        // All the items under listRef.
+         getDownloadURL(itemRef).then((e) => {
+          let name = itemRef.name.substring(0, itemRef.name.length-4);
+          imageMap[name] = e; 
+        })
+      });
+    }).catch((error) => {
+      // Uh-oh, an error occurred!
+    });
+  }
+
+  //this does successfully loop through all pokemon in database
+  const getPokemon = async () => {
+    for(var i =1; i<= total;i++){
+      const pokeRef = ref(realDb, 'pokemon/'+i);
+      onValue(pokeRef, (snapshot) => {
+        if(snapshot.exists()){
+        const data = snapshot.val();
+          pokeMap[data?.name] = data?.weight; 
+        }     
     })
     }
-    const getDownload2 = async (name) => {
-      const picRef = sRef(storage, `pokemon_images/${name}.png`);
-     
-      await getDownloadURL(picRef).then((e) => {
-        setUrl2(e);
-      })
-      }
     
-    
-  
+  }
+
+ 
 
   //retrieve previous high score from database
   const getPreviousHighScore = async () => {
@@ -82,20 +123,21 @@ export default function PokemonWeight() {
 //check if selected answer is correct
   const checkWinner = e => {
     //setImgSrc("");
+    console.log(pokeMap[pokeName1] + " vs " + pokeMap[pokeName2]);
     console.log(e.currentTarget.id);
-    if(e.currentTarget.id === "poke1" && pokeWeight1 > pokeWeight2){
+    if(e.currentTarget.id === "poke1" && pokeMap[pokeName1] > pokeMap[pokeName2]){
       console.log("Correct");
       setStreak(streak+1);
       displayPokemon();
     }
-    else if(e.currentTarget.id === "poke2" && pokeWeight2 > pokeWeight1){
+    else if(e.currentTarget.id === "poke2" && pokeMap[pokeName2] > pokeMap[pokeName1]){
       console.log("Correct");
       setStreak(streak+1);
       displayPokemon();
     }
 
     //if pokemon have equal weight and equal button is selected it should be correct
-    else if(e.currentTarget.id === "equal" && pokeWeight2 === pokeWeight1){
+    else if(e.currentTarget.id === "equal" && pokeMap[pokeName2] === pokeMap[pokeName1]){
       console.log("Correct");
       setStreak(streak+1);
       displayPokemon();
@@ -129,7 +171,12 @@ export default function PokemonWeight() {
   //begin game
   const startGame = async () => {
     setStreak(0);
-    displayPokemon();
+    const selection1 = getRandomSelection(pokeMap);
+    const selection2 = getRandomSelection(pokeMap);
+    setImgSrc1(imageMap[selection1]);
+    setName(selection1);
+    setImgSrc2(imageMap[selection2]);
+    setName2(selection2);
   }
 
   //game ends, set all states to default
@@ -139,41 +186,18 @@ export default function PokemonWeight() {
     setName2("");
     setWeight2("");
     setStreak(0);
+    setImgSrc1(pic);
+    setImgSrc2(pic);
   }
 
   
-
-  //read pokemon data from firebase for poke card 1
-  const readData = async (num) => {
-    const pokeRef = ref(realDb, 'pokemon/'+num);
-    onValue(pokeRef, (snapshot) => {
-      if(snapshot.exists()){
-      const data = snapshot.val();
-        setName(data?.name);
-        setWeight(data?.weight);
-      }     
-  })
-}
-
-
-//read pokemon data from firebase for poke card 2
-const readData2 = async (num) => {
-  const pokeRef = ref(realDb, 'pokemon/'+num);
-  onValue(pokeRef, (snapshot) => {
-    if(snapshot.exists()){
-    const data = snapshot.val();
-      setName2(data?.name);
-      setWeight2(data?.weight);
-    }     
-})
-}
   return (
     <>
     <Stylesheet primary ={true}/>
     <div className="gameArea">
     <div className="pokeCard1" id="poke1" onClick={checkWinner}>
       <div class="card">
-      <img src={url1}/>
+      <img src={imgSrc1}></img>
         <h1>{pokeName1}</h1>
         <h2>{pokeWeight1}</h2>
       </div>
@@ -181,7 +205,7 @@ const readData2 = async (num) => {
 
     <div className="pokeCard2" id="poke2" onClick={checkWinner}>
       <div class="card">
-      <img src={url2} alt="cover"/>
+      <img src={imgSrc2} alt="cover"/>
       <h1>{pokeName2}</h1>
       <h2>{pokeWeight2}</h2>
       </div>
