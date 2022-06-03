@@ -5,6 +5,8 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import {getDatabase, ref, set, child, update, remove, onValue, get} from "firebase/database";
 import pic from './whopokemon.jpg';
 import Stylesheet from './HomeStyleSheet';
+import {storage} from './firebase-config';
+import { ref as sRef, getDownloadURL } from 'firebase/storage';
 
 export default function PokemonWeight() {
 
@@ -16,6 +18,8 @@ export default function PokemonWeight() {
   const [total, setTotal] = useState(0); //get total number of pokemon in database
   const [streak, setStreak] = useState(0); //keep track of user's streak
   const [oldStreak, setOldStreak] = useState(0); //get previous streak from user database
+  const [url1, setUrl1] = useState("");
+  const [url2, setUrl2] = useState("");
 
   //get random number between 1 and total size of pokemon count in database to display randomly
   const getRand = () => {
@@ -23,6 +27,7 @@ export default function PokemonWeight() {
     const max = Math.floor(total+1);
     return Math.floor(Math.random() * (max-min) + min);
   }
+
 
   useEffect(()=> {
     onAuthStateChanged(auth, (currentUser) => {
@@ -36,8 +41,28 @@ export default function PokemonWeight() {
   //display 2 randomly selected pokemon
   const displayPokemon = async () => {
     readData(getRand());
+    getDownload('Charizard');
     readData2(getRand());
+    getDownload2('Charizard');
   }
+
+  const getDownload = async (name) => {
+    const picRef = sRef(storage, `pokemon_images/${name}.png`);
+   
+    await getDownloadURL(picRef).then((e) => {
+      setUrl1(e);
+    })
+    }
+    const getDownload2 = async (name) => {
+      const picRef = sRef(storage, `pokemon_images/${name}.png`);
+     
+      await getDownloadURL(picRef).then((e) => {
+        setUrl2(e);
+      })
+      }
+    
+    
+  
 
   //retrieve previous high score from database
   const getPreviousHighScore = async () => {
@@ -148,7 +173,7 @@ const readData2 = async (num) => {
     <div className="gameArea">
     <div className="pokeCard1" id="poke1" onClick={checkWinner}>
       <div class="card">
-      <img src={imgSrc}/>
+      <img src={url1}/>
         <h1>{pokeName1}</h1>
         <h2>{pokeWeight1}</h2>
       </div>
@@ -156,7 +181,7 @@ const readData2 = async (num) => {
 
     <div className="pokeCard2" id="poke2" onClick={checkWinner}>
       <div class="card">
-      <img src={pic} alt="cover"/>
+      <img src={url2} alt="cover"/>
       <h1>{pokeName2}</h1>
       <h2>{pokeWeight2}</h2>
       </div>
