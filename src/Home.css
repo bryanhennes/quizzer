@@ -8,6 +8,8 @@
     font-family: 'open-sans';
 }
 
+
+
 .flip-card {
     background-color: transparent;
     width: 300px;
@@ -161,7 +163,8 @@
 
 .card img {
   width: 300px;
-  height: 200px;
+  height: 300px;
+  margin: auto;
   border-radius: 8px;
   object-fit: cover;
 }
@@ -217,4 +220,8 @@
 .pokeCard2 {
   position: relative;
   left: 15vw;
+}
+
+.gameArea .card {
+  height: 300px;
 }
