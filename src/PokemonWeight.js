@@ -8,6 +8,12 @@ import Stylesheet from './HomeStyleSheet';
 import {storage} from './firebase-config';
 import { ref as sRef, getDownloadURL, listAll } from 'firebase/storage';
 import 'animate.css';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
 
 export default function PokemonWeight() {
 
@@ -19,13 +25,9 @@ export default function PokemonWeight() {
   const [imgSrc2, setImgSrc2] = useState(pic);
   const [total, setTotal] = useState(0); //get total number of pokemon in database
   const [streak, setStreak] = useState(0); //keep track of user's streak
+  const [lastStreak, setLastStreak] = useState(0); //keep track of user's streak
   const [oldStreak, setOldStreak] = useState(0); //get previous streak from user database
-  const [url1, setUrl1] = useState("");
-  const [url2, setUrl2] = useState("");
-  const [imgRef1, setRef1] = useState("");
-  const [imgRef2, setRef2] = useState("");
-  const[rand1, setRand1] = useState(0);
-  const[rand2, setRand2] = useState(0);
+  const [isPlaying, setPlaying] = useState(false); //is currently playing game
   const imageMap = {};
   const pokeMap = {};
   const[isCorrect, setCorrect] = useState("");
@@ -36,6 +38,25 @@ export default function PokemonWeight() {
     const max = Math.floor(total+1);
     return Math.floor(Math.random() * (max-min) + min);
   }
+
+  const [open, setOpen] = useState(false);
+  
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  
+  //when summary box is closed, clear game
+  const handleClose = () => {
+    setOpen(false);
+    setPlaying(false);
+    setName("");
+    setWeight("");
+    setName2("");
+    setWeight2("");
+    setStreak(0);
+    setImgSrc1(pic);
+    setImgSrc2(pic);
+  };
 
 
   //get random selection from pookemon map
@@ -151,31 +172,33 @@ const animateCard = (e) => {
   
 //check if selected answer is correct
   const checkWinner = e => {
-
+    if(isPlaying){
+      setWeight(pokeMap[pokeName1]);
+      setWeight2(pokeMap[pokeName2]);
     if(e.currentTarget.id === "poke1" && pokeMap[pokeName1] > pokeMap[pokeName2]){
-      setCorrect("Correct");
       setStreak(streak+1);
+      setLastStreak(lastStreak+1);
       displayPokemon();
     }
     else if(e.currentTarget.id === "poke2" && pokeMap[pokeName2] > pokeMap[pokeName1]){
-      setCorrect("Correct");
       setStreak(streak+1);
+      setLastStreak(lastStreak+1);
       displayPokemon();
     }
 
     //if pokemon have equal weight and equal button is selected it should be correct
     else if(e.currentTarget.id === "equal" && pokeMap[pokeName2] === pokeMap[pokeName1]){
-      setCorrect("Correct");
       setStreak(streak+1);
+      setLastStreak(lastStreak+1);
       displayPokemon();
     }
     else {
-      console.log("False");
-      setCorrect("Incorrect");
       if(streak > oldStreak)
         setHighscore();
-      endGame();
+      showResults();
     }
+  }
+  
     
   }
 
@@ -199,16 +222,20 @@ const animateCard = (e) => {
   //begin game
   const startGame = async () => {
     setStreak(0);
+    setLastStreak(0);
+    setPlaying(true);
     const selection1 = getRandomSelection(pokeMap);
     const selection2 = getRandomSelection(pokeMap);
     setImgSrc1(imageMap[selection1]);
     setName(selection1);
     setImgSrc2(imageMap[selection2]);
     setName2(selection2);
+  
   }
 
   //game ends, set all states to default
   const endGame = async () => {
+    showResults();
     setName("");
     setWeight("");
     setName2("");
@@ -216,6 +243,11 @@ const animateCard = (e) => {
     setStreak(0);
     setImgSrc1(pic);
     setImgSrc2(pic);
+  }
+
+  const showResults = async () => {
+    handleOpen();
+    console.log(pokeMap[pokeName1]);
   }
 
   
@@ -227,7 +259,6 @@ const animateCard = (e) => {
       <div class="card">
       <img src={imgSrc1}></img>
         <h1>{pokeName1}</h1>
-        <h2>{pokeWeight1}</h2>
       </div>
     </div>
 
@@ -235,19 +266,39 @@ const animateCard = (e) => {
       <div class="card">
       <img src={imgSrc2} alt="cover"/>
       <h1>{pokeName2}</h1>
-      <h2>{pokeWeight2}</h2>
       </div>
     </div>
 
     <div className="startGame">
-      <h1>Current Streak: {streak}</h1>
-      <h2>{displayResult(isCorrect)}</h2>
+      <h1>Which Pokemon weighs more?</h1>
+      <h2>Current Streak: {streak}</h2>
+      <h2>Best Streak: {oldStreak}</h2>
       <button className="startGameButton" onClick={startGame}>Start Game</button>
     </div>
 
     <div className="equalButton">
       <button onClick={checkWinner} id="equal">Equal</button>
     </div>
+
+    <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+            You Lost!<br></br>
+           {pokeName1} weighs {pokeWeight1}lbs<br></br>
+           {pokeName2} weighs {pokeWeight2}lbs
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <h1>Summary</h1>
+            <p>Score: {lastStreak}</p>
+            <p>Best: {oldStreak} </p>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+           Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
     </>
   )
