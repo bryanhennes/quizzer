@@ -3,6 +3,7 @@ import { connectAuthEmulator, createUserWithEmailAndPassword, onAuthStateChanged
 import { db, auth, realDb } from "./firebase-config";
 import { collection, getDocs, addDoc, doc, updateDoc} from "firebase/firestore";
 import {getDatabase, ref, set, child, update, remove, onValue} from "firebase/database";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function LoginForm({Login, error}) {
     const [users, setUsers] = useState([]);
@@ -10,6 +11,8 @@ export default function LoginForm({Login, error}) {
     const [newUn, setNewUn] = useState("");
     const [newCountry, setNewCountry] = useState("");
     const [userId, setUid] = useState({});
+
+    let navigate = useNavigate();
 
     let today = new Date();
     let date=parseInt(today.getMonth()+1) + "/" + today.getDate() + "/"+today.getFullYear();
@@ -33,6 +36,7 @@ export default function LoginForm({Login, error}) {
         joindate: date, 
         poke_highscore: 0,
       })
+      navigate('/Home');
     };
 
 
@@ -62,7 +66,7 @@ export default function LoginForm({Login, error}) {
                 <input type="text" placeholder='Country' name="country" id="country" onChange={e => setNewCountry(e.target.value)}/>
             </div>
             <br></br>
-            <button className="submitButton" onClick={createUser}></button>
+            <button className="submitButton" onClick={createUser}>Submit</button>
             
         </div>
         

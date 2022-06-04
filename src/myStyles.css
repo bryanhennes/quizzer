@@ -2,6 +2,10 @@
     color: orange;
 }
 
+button {
+  cursor: pointer;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -55,7 +59,7 @@ html {
 }
 
 .signedInLogoBtn {
-  right:86%;
+  right:80%;
 }
 
 .signOutButton {
