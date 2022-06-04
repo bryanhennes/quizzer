@@ -225,3 +225,17 @@
 .gameArea .card {
   height: 300px;
 }
+
+.pokeCard1:active {
+  
+  margin: 0 0.5rem;
+  animation: bounce; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s; /* don't forget to set a duration! */
+}
+
+.pokeCard2:active {
+  
+  margin: 0 0.5rem;
+  animation: bounce; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s; /* don't forget to set a duration! */
+}

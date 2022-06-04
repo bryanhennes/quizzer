@@ -20,8 +20,12 @@ export default function Home() {
     const [pokeWeight, setWeight] = useState("");
     const [total, setTotal] = useState(0);
 
+    //user must be logged in to play
     const goToGame = () => {
-      navigate('/PokemonWeight');
+      if(user != null)
+        navigate('/PokemonWeight');
+      else
+        navigate('/Login');
     }
 
     const readTotal = async () => {

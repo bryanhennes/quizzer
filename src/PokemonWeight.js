@@ -7,6 +7,7 @@ import pic from './whopokemon.jpg';
 import Stylesheet from './HomeStyleSheet';
 import {storage} from './firebase-config';
 import { ref as sRef, getDownloadURL, listAll } from 'firebase/storage';
+import 'animate.css';
 
 export default function PokemonWeight() {
 
@@ -27,6 +28,7 @@ export default function PokemonWeight() {
   const[rand2, setRand2] = useState(0);
   const imageMap = {};
   const pokeMap = {};
+  const[isCorrect, setCorrect] = useState("");
 
   //get random number between 1 and total size of pokemon count in database to display randomly
   const getRand = () => {
@@ -103,6 +105,14 @@ export default function PokemonWeight() {
     
   }
 
+  function displayResult() {
+        return (
+            <div className="displayResult">
+                {isCorrect}
+            </div>
+        )
+}
+
  
 
   //retrieve previous high score from database
@@ -119,31 +129,49 @@ export default function PokemonWeight() {
   })
 }
 
+const animateCard = (e) => {
+  const element1 = document.querySelector('pokeCard1');
+  const element2 = document.querySelector('pokeCard2');
+  if(e.currentTarget.id === "poke1"){
+    element1.classList.add('animate__animated', 'animate__bounce');
+
+    element1.addEventListener('animationend', () => {
+      element1.classList.remove('animate__animated', 'animate__bounce');
+    });
+  }
+  else if(e.currentTarget.id === "poke2"){
+    element2.classList.add('animate__animated', 'animate__bounce');
+
+    element2.addEventListener('animationend', () => {
+      element2.classList.remove('animate__animated', 'animate__bounce');
+    });
+  }
+}
+
   
 //check if selected answer is correct
   const checkWinner = e => {
-    //setImgSrc("");
-    console.log(pokeMap[pokeName1] + " vs " + pokeMap[pokeName2]);
-    console.log(e.currentTarget.id);
+
     if(e.currentTarget.id === "poke1" && pokeMap[pokeName1] > pokeMap[pokeName2]){
-      console.log("Correct");
+      setCorrect("Correct");
       setStreak(streak+1);
       displayPokemon();
     }
     else if(e.currentTarget.id === "poke2" && pokeMap[pokeName2] > pokeMap[pokeName1]){
-      console.log("Correct");
+      setCorrect("Correct");
       setStreak(streak+1);
       displayPokemon();
     }
 
     //if pokemon have equal weight and equal button is selected it should be correct
     else if(e.currentTarget.id === "equal" && pokeMap[pokeName2] === pokeMap[pokeName1]){
-      console.log("Correct");
+      setCorrect("Correct");
       setStreak(streak+1);
       displayPokemon();
     }
     else {
       console.log("False");
+      setCorrect("Incorrect");
       if(streak > oldStreak)
         setHighscore();
       endGame();
@@ -213,6 +241,7 @@ export default function PokemonWeight() {
 
     <div className="startGame">
       <h1>Current Streak: {streak}</h1>
+      <h2>{displayResult(isCorrect)}</h2>
       <button className="startGameButton" onClick={startGame}>Start Game</button>
     </div>
 
