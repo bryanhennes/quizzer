@@ -14,6 +14,7 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 export default function Navigation() {
 
   const [user, setUser] = useState({});
+  const [isNavExpanded, setIsNavExpanded] = useState(false)
 
   useEffect(()=> {
     onAuthStateChanged(auth, (currentUser) => {
@@ -32,7 +33,9 @@ const logout = async () => {
       <a href="/Home" className="brand-name">
         Quizzer
       </a>
-      <button className="hamburger">
+      <button className="hamburger" onClick={() => {
+          setIsNavExpanded(!isNavExpanded);
+        }}>
         {/* icon from heroicons.com */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +51,9 @@ const logout = async () => {
         </svg>
       </button>
       <div
-        className="navigation-menu">
+        className={
+          isNavExpanded ? "navigation-menu expanded" : "navigation-menu"
+        }>
         <ul>
           <li>
             <a href="/Home">Home</a>
