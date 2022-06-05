@@ -8,6 +8,9 @@ import Home from "./Home";
 import NavBarSignedIn from "./NavBarSignedIn";
 import NavBarNotSignedIn from "./NavBarNotSignedIn";
 
+import Navigation from "./Navigation";
+
+
 
 
 
@@ -34,12 +37,20 @@ function App() {
   return (
     <>
     <Stylesheet primary ={true}/>
-    {/*show different options on nav bar depending on whether or not a user is logged in*/}
+    {/*show different options on nav bar depending on whether or not a user is logged in
     {(user != null) ? (
-        <NavBarSignedIn />
+        <Navigation />
       ):(
         <NavBarNotSignedIn />
-      )}
+      )}*/}
+
+
+      <Navigation />
+    
+     
+     
+
+
 
       
 
