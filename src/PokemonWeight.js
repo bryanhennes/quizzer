@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate } from "react-router-dom";
 import { db, auth, realDb } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
-import {getDatabase, ref, set, child, update, remove, onValue, get} from "firebase/database";
+import {getDatabase, ref, set, child, update, remove, onValue, get, query, limitToLast, orderByChild} from "firebase/database";
 import pic from './whopokemon.jpg';
 import Stylesheet from './HomeStyleSheet';
 import {storage} from './firebase-config';
@@ -31,18 +31,17 @@ export default function PokemonWeight() {
   const [isPlaying, setPlaying] = useState(false); //is currently playing game
   const imageMap = {};
   const pokeMap = {};
-  const[isCorrect, setCorrect] = useState("");
-
-  //get random number between 1 and total size of pokemon count in database to display randomly
-  const getRand = () => {
-    const min = Math.ceil(1);
-    const max = Math.floor(total+1);
-    return Math.floor(Math.random() * (max-min) + min);
-  }
-
+  const users = [];
+  const usersList= [];
+  const [leaderboardUsers, setLeaderboardUsers] = useState(new Map());
   const [open, setOpen] = useState(false);
-  
+  const [showLeaderboards, setShowLeaderboards] = useState(false);
+  const[leaderBoard, setLeaderboard] = useState("");
+
+  //open summary dialog
   const handleOpen = () => {
+    displayLeaderboards();
+    getLeaderboardString();
     setOpen(true);
   };
   
@@ -77,7 +76,7 @@ export default function PokemonWeight() {
       getPreviousHighScore();
       listImages();
       getPokemon();
-      
+      populateUsers();
     });
   });
   const [user, setUser] = useState({});
@@ -93,8 +92,8 @@ export default function PokemonWeight() {
     setImgSrc2(imageMap[selection2]);
     setName2(selection2);
     }
+    //call again if both selections are the same
     else{
-      console.log("display pokemon called 2 poke of the same pokemon: " + selection1 + " and " + selection2);
       displayPokemon();
     }
   }
@@ -134,15 +133,38 @@ export default function PokemonWeight() {
     
   }
 
-  function displayResult() {
-        return (
-            <div className="displayResult">
-                {isCorrect}
-            </div>
-        )
+  const getLeaderboardString = async () => {
+    const iterator1 = leaderboardUsers.keys();
+    const iterator2 = leaderboardUsers.values();
+    var result = "";
+    for(var i =0; i < leaderboardUsers.size; i++){
+    result += iterator1.next().value + ": " + iterator2.next().value +"\n";
+    }
+    setLeaderboard(result);
+   
+  }
+
+  const displayLeaderboards = async () => {
+    users.reverse();
+    users.forEach(element => {    
+      usersList.push({username : element.username});
+      usersList.push({highscore : element.poke_highscore});
+      setLeaderboardUsers(new Map(leaderboardUsers.set(element.username, element.poke_highscore)));
+    })
+  }
+
+  const populateUsers = async () => {
+      const recentUsers = query(ref(realDb, 'users/'), orderByChild("poke_highscore"));
+      get(recentUsers)
+      .then((snapshot)=> {
+
+        snapshot.forEach(childSnapshot => {
+          users.push(childSnapshot.val());
+        })
+      })
+    
 }
 
- 
 
   //retrieve previous high score from database
   const getPreviousHighScore = async () => {
@@ -158,26 +180,6 @@ export default function PokemonWeight() {
   })
 }
 
-const animateCard = (e) => {
-  const element1 = document.querySelector('pokeCard1');
-  const element2 = document.querySelector('pokeCard2');
-  if(e.currentTarget.id === "poke1"){
-    element1.classList.add('animate__animated', 'animate__bounce');
-
-    element1.addEventListener('animationend', () => {
-      element1.classList.remove('animate__animated', 'animate__bounce');
-    });
-  }
-  else if(e.currentTarget.id === "poke2"){
-    element2.classList.add('animate__animated', 'animate__bounce');
-
-    element2.addEventListener('animationend', () => {
-      element2.classList.remove('animate__animated', 'animate__bounce');
-    });
-  }
-}
-
-  
 //check if selected answer is correct
   const checkWinner = e => {
     if(isPlaying){
@@ -230,6 +232,7 @@ const animateCard = (e) => {
   //begin game
   const startGame = async () => {
     setStreak(0);
+    setShowLeaderboards(false);
     setLastStreak(0);
     setPlaying(true);
     const selection1 = getRandomSelection(pokeMap);
@@ -246,17 +249,6 @@ const animateCard = (e) => {
   
   }
 
-  //game ends, set all states to default
-  const endGame = async () => {
-    showResults();
-    setName("");
-    setWeight("");
-    setName2("");
-    setWeight2("");
-    setStreak(0);
-    setImgSrc1(pic);
-    setImgSrc2(pic);
-  }
 
   const showResults = async () => {
     handleOpen();
@@ -296,7 +288,9 @@ const animateCard = (e) => {
   </div>*/}
 
     <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
+    {(!showLeaderboards) ? (
+            <>
+          <DialogTitle>
             You Lost!<br></br>
            {pokeName1} weighs {pokeWeight1}lbs<br></br>
            {pokeName2} weighs {pokeWeight2}lbs
@@ -309,10 +303,34 @@ const animateCard = (e) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Button onClick={()=>setShowLeaderboards(true)} color="primary">
+           Leaderboards
+          </Button>
+          <Button onClick={handleClose} color="primary">
+           Close
+          </Button>
+        </DialogActions> 
+            </>
+          ):(
+            <>
+        <DialogTitle>
+          Leaderboards:<br></br>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {leaderBoard}<br></br>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>setShowLeaderboards(false)} color="primary">
+           Go back
+          </Button>
           <Button onClick={handleClose} color="primary">
            Close
           </Button>
         </DialogActions>
+        </>
+      )}
       </Dialog>
 
     </>
