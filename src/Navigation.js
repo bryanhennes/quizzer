@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import Home from "./Home";
 import Profile from './Profile';
 import Login from './Login';
+import Register from './Register';
 import LoginForm from './LoginForm';
 import PokemonWeight from './PokemonWeight';
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate } from "react-router-dom";
@@ -84,6 +85,7 @@ const logout = async () => {
 
 <Routes>
 <Route path="/Profile" element={<Profile />} />
+<Route path="/Register" element={<Register />} />
 <Route path="/Home" element={<Home />} />
 <Route path="/LoginForm" element={<LoginForm />} />
 <Route path="/Login" element={<Login />} />

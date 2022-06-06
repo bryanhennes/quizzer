@@ -14,6 +14,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 
 export default function PokemonWeight() {
 
@@ -85,10 +86,17 @@ export default function PokemonWeight() {
   const displayPokemon = () => {
     const selection1 = getRandomSelection(pokeMap);
     const selection2 = getRandomSelection(pokeMap);
+    console.log(selection1 + ", " + selection2);
+    if(selection1 != selection2){
     setImgSrc1(imageMap[selection1]);
     setName(selection1);
     setImgSrc2(imageMap[selection2]);
     setName2(selection2);
+    }
+    else{
+      console.log("display pokemon called 2 poke of the same pokemon: " + selection1 + " and " + selection2);
+      displayPokemon();
+    }
   }
 
   //when pokemon page first loads, grab all download urls from pokemon images in firebase storage
@@ -226,10 +234,15 @@ const animateCard = (e) => {
     setPlaying(true);
     const selection1 = getRandomSelection(pokeMap);
     const selection2 = getRandomSelection(pokeMap);
-    setImgSrc1(imageMap[selection1]);
-    setName(selection1);
-    setImgSrc2(imageMap[selection2]);
-    setName2(selection2);
+    if(selection1 != selection2){
+      setImgSrc1(imageMap[selection1]);
+      setName(selection1);
+      setImgSrc2(imageMap[selection2]);
+      setName2(selection2);
+      }
+      else{
+        startGame();
+      }
   
   }
 
@@ -247,14 +260,12 @@ const animateCard = (e) => {
 
   const showResults = async () => {
     handleOpen();
-    console.log(pokeMap[pokeName1]);
   }
 
   
   return (
     <>
     <Stylesheet primary ={true}/>
-    <div className="gameArea">
     <div className="pokeCard1" id="poke1" onClick={checkWinner}>
       <div class="card">
       <img src={imgSrc1}></img>
@@ -276,9 +287,13 @@ const animateCard = (e) => {
       <button className="startGameButton" onClick={startGame}>Start Game</button>
     </div>
 
-    <div className="equalButton">
+    {/*<div className="equalButton">
       <button onClick={checkWinner} id="equal">Equal</button>
     </div>
+
+    <div className="leaderboard">
+      <h1>Leaderboards</h1>
+  </div>*/}
 
     <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
@@ -299,7 +314,7 @@ const animateCard = (e) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+
     </>
   )
 }
