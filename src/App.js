@@ -2,9 +2,11 @@ import { useState, useEffect, DropdownButton, Dropdown } from "react";
 import { db, auth } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import { collection, getDocs, addDoc } from "firebase/firestore";
-import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate } from "react-router-dom";
 import Stylesheet from "./Stylesheet";
 import Home from "./Home";
+import Login from "./Login";
+import Register from "./Register";
 import NavBarSignedIn from "./NavBarSignedIn";
 import NavBarNotSignedIn from "./NavBarNotSignedIn";
 
@@ -16,7 +18,6 @@ import Navigation from "./Navigation";
 
 
 function App() {
-
   
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
@@ -27,6 +28,7 @@ function App() {
   useEffect(()=> {
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
+
   });
 
   
@@ -37,13 +39,13 @@ function App() {
   return (
     <>
     <Stylesheet primary ={true}/>
+  
     {/*show different options on nav bar depending on whether or not a user is logged in
     {(user != null) ? (
         <Navigation />
       ):(
         <NavBarNotSignedIn />
       )}*/}
-
 
       <Navigation />
     

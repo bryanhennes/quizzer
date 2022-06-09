@@ -13,7 +13,7 @@ export default function Home() {
         onAuthStateChanged(auth, (currentUser) => {
           setUser(currentUser);
           readTotal();
-          console.log(total);
+          console.log(total + " pokemon in database");
         });
     });
     const [pokeName, setName] = useState("");

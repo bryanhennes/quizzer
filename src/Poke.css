@@ -1,0 +1,133 @@
+html, body {
+    height:100%;
+
+}
+
+.card {
+    height:400px;
+  }
+
+
+ img {
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    
+  }
+
+  .startGame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  
+ 
+  
+  
+  .leaderboard{
+    position: fixed;
+  }
+  
+  
+  
+  .equalButton button {
+    position: fixed;
+    font-family: 'open-sans';
+    cursor: pointer;
+    margin: auto;
+    top:30rem;
+    left: 50%;
+    height:50px;
+    width:100px;
+    background-color: #FF013C;
+    transform: translate(-50%, -50%);
+  }
+  
+  .equalButton button:hover{
+    background-color: #bf18f1;
+  }
+  
+  .pokeCard1 {
+    
+    font-family: 'open-sans';
+    cursor: pointer;
+    text-align: center;
+    
+   
+  
+  }
+  
+  .pokeCard2 {
+
+    font-family: 'open-sans';
+    cursor: pointer;
+    text-align: center;
+   
+  
+  }
+  
+  
+  @media screen and (min-width: 768px) {
+    .pokeCard1 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      
+    }
+  }
+  
+
+  .startGame button {
+    appearance: button;
+    background-color: #000;
+    background-image: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: #fff 4px 4px 0 0,#000 4px 4px 0 1px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: ITCAvantGardeStd-Bk,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 5px 10px 0;
+    overflow: visible;
+    padding: 12px 40px;
+    text-align: center;
+    text-transform: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  
+  .startGame button:focus {
+    text-decoration: none;
+  }
+  
+  .startGame button:hover {
+    text-decoration: none;
+  }
+  
+  .startGame button:active {
+    box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+    outline: 0;
+  }
+  
+  .startGame button:not([disabled]):active {
+    box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+    transform: translate(2px, 2px);
+  }
+  
+  @media (min-width: 768px) {
+    .startGame button {
+      padding: 12px 50px;
+    }
+  }
+  

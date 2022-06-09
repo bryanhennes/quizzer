@@ -6,6 +6,7 @@ import Login from './Login';
 import Register from './Register';
 import LoginForm from './LoginForm';
 import PokemonWeight from './PokemonWeight';
+import Stylesheet from './NavStyleSheet';
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate } from "react-router-dom";
 import { db, auth } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";

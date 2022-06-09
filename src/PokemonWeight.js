@@ -4,7 +4,7 @@ import { db, auth, realDb } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import {getDatabase, ref, set, child, update, remove, onValue, get, query, limitToLast, orderByChild} from "firebase/database";
 import pic from './whopokemon.jpg';
-import Stylesheet from './HomeStyleSheet';
+import Stylesheet from './PokeStyleSheet';
 import {storage} from './firebase-config';
 import { ref as sRef, getDownloadURL, listAll } from 'firebase/storage';
 import 'animate.css';
@@ -14,6 +14,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
+import Login from "./Login";
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 
 export default function PokemonWeight() {
@@ -31,19 +32,24 @@ export default function PokemonWeight() {
   const [isPlaying, setPlaying] = useState(false); //is currently playing game
   const imageMap = {};
   const pokeMap = {};
-  const users = [];
   const usersList= [];
   const [leaderboardUsers, setLeaderboardUsers] = useState(new Map());
   const [open, setOpen] = useState(false);
   const [showLeaderboards, setShowLeaderboards] = useState(false);
   const[leaderBoard, setLeaderboard] = useState("");
-
+  const [users, setUsers] = useState([]);
+  const [loadCounter, setCounter] = useState(0);
+  let navigate = useNavigate();
   //open summary dialog
   const handleOpen = () => {
-    displayLeaderboards();
+    //displayLeaderboards();
+    users.sort((a, b) => (a.poke_highscore < b.poke_highscore) ? 1 : -1);
+    console.log(users);
     getLeaderboardString();
     setOpen(true);
   };
+
+ 
   
   //when summary box is closed, clear game
   const handleClose = () => {
@@ -56,6 +62,7 @@ export default function PokemonWeight() {
     setStreak(0);
     setImgSrc1(pic);
     setImgSrc2(pic);
+    setUsers([]);
   };
 
 
@@ -68,25 +75,24 @@ export default function PokemonWeight() {
     return key;
   }
 
-
+  const [user, setUser] = useState({});
   useEffect(()=> {
+    
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       readTotal();
       getPreviousHighScore();
       listImages();
       getPokemon();
-      populateUsers();
     });
   });
-  const [user, setUser] = useState({});
 
   //display 2 randomly selected pokemon
   const displayPokemon = () => {
     const selection1 = getRandomSelection(pokeMap);
     const selection2 = getRandomSelection(pokeMap);
     console.log(selection1 + ", " + selection2);
-    if(selection1 != selection2){
+    if(selection1 !== selection2 && pokeMap[selection1] !== pokeMap[selection2]){
     setImgSrc1(imageMap[selection1]);
     setName(selection1);
     setImgSrc2(imageMap[selection2]);
@@ -96,6 +102,7 @@ export default function PokemonWeight() {
     else{
       displayPokemon();
     }
+    //console.log(selection1 + " weighs: " + pokeMap[selection1] + " vs " + selection2 + " weighs: " + pokeMap[selection2]);
   }
 
   //when pokemon page first loads, grab all download urls from pokemon images in firebase storage
@@ -145,16 +152,15 @@ export default function PokemonWeight() {
   }
 
   const displayLeaderboards = async () => {
-    users.reverse();
+    //users.reverse();
     users.forEach(element => {    
       usersList.push({username : element.username});
       usersList.push({highscore : element.poke_highscore});
-      setLeaderboardUsers(new Map(leaderboardUsers.set(element.username, element.poke_highscore)));
     })
   }
 
   const populateUsers = async () => {
-      const recentUsers = query(ref(realDb, 'users/'), orderByChild("poke_highscore"));
+      const recentUsers = query(ref(realDb, 'users/'), orderByChild("poke_highscore", "desc"));
       get(recentUsers)
       .then((snapshot)=> {
 
@@ -162,6 +168,8 @@ export default function PokemonWeight() {
           users.push(childSnapshot.val());
         })
       })
+      setUsers(users);
+      
     
 }
 
@@ -212,6 +220,9 @@ export default function PokemonWeight() {
     
   }
 
+
+ 
+
   //if new highscore update users highscore in database
   const setHighscore = async () => {
     update(ref(realDb, 'users/' + user.uid), {
@@ -231,13 +242,20 @@ export default function PokemonWeight() {
 
   //begin game
   const startGame = async () => {
+    //user must be logged in to play
+    if(user === null){
+      navigate('/Login');
+    }
+    else{
+    //setUsers([]);
+    populateUsers();
     setStreak(0);
     setShowLeaderboards(false);
     setLastStreak(0);
     setPlaying(true);
     const selection1 = getRandomSelection(pokeMap);
     const selection2 = getRandomSelection(pokeMap);
-    if(selection1 != selection2){
+    if(selection1 !== selection2 && pokeMap[selection1] !== pokeMap[selection2]){
       setImgSrc1(imageMap[selection1]);
       setName(selection1);
       setImgSrc2(imageMap[selection2]);
@@ -246,11 +264,14 @@ export default function PokemonWeight() {
       else{
         startGame();
       }
-  
+
+      //console.log(selection1 + " weighs: " + pokeMap[selection1] + " vs " + selection2 + " weighs: " + pokeMap[selection2]);
+    }
   }
 
 
   const showResults = async () => {
+    //populateUsers();
     handleOpen();
   }
 
@@ -258,29 +279,32 @@ export default function PokemonWeight() {
   return (
     <>
     <Stylesheet primary ={true}/>
-    <div className="pokeCard1" id="poke1" onClick={checkWinner}>
-      <div class="card">
+
+    <div className="startGame">
+      <h1>Which Pokemon Weighs More?</h1>
+      <h2>Current Streak: {streak}</h2>
+      <h2>Best Streak: {oldStreak}</h2>
+      <br></br>
+      <button className="startGameButton" onClick={startGame}>Start Game</button>
+      <div className="pokeCard1" id="poke1" onClick={checkWinner}>
+      <div className="card-poke1">
       <img src={imgSrc1}></img>
         <h1>{pokeName1}</h1>
       </div>
     </div>
 
     <div className="pokeCard2" id="poke2" onClick={checkWinner}>
-      <div class="card">
+      <div className="card-poke2">
       <img src={imgSrc2} alt="cover"/>
       <h1>{pokeName2}</h1>
       </div>
     </div>
-
-    <div className="startGame">
-      <h1>Which Pokemon weighs more?</h1>
-      <h2>Current Streak: {streak}</h2>
-      <h2>Best Streak: {oldStreak}</h2>
-      <button className="startGameButton" onClick={startGame}>Start Game</button>
     </div>
+ 
+    
 
     {/*<div className="equalButton">
-      <button onClick={checkWinner} id="equal">Equal</button>
+      <button onClick={checkWinner} id="equal">Same Weight</button>
     </div>
 
     <div className="leaderboard">
@@ -318,7 +342,11 @@ export default function PokemonWeight() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {leaderBoard}<br></br>
+            {users.map((user)=>{
+              return (
+                <h1>{`${user.username}: ${user.poke_highscore}`}</h1>
+              );
+            })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -332,7 +360,6 @@ export default function PokemonWeight() {
         </>
       )}
       </Dialog>
-
     </>
   )
 }
