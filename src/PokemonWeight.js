@@ -286,18 +286,20 @@ export default function PokemonWeight() {
       <h2>Best Streak: {oldStreak}</h2>
       <br></br>
       <button className="startGameButton" onClick={startGame}>Start Game</button>
+      <div className="pokeCards">
       <div className="pokeCard1" id="poke1" onClick={checkWinner}>
       <div className="card-poke1">
       <img src={imgSrc1}></img>
-        <h1>{pokeName1}</h1>
+        <h1 className="pokeName1">{pokeName1}</h1>
       </div>
     </div>
 
     <div className="pokeCard2" id="poke2" onClick={checkWinner}>
       <div className="card-poke2">
       <img src={imgSrc2} alt="cover"/>
-      <h1>{pokeName2}</h1>
+      <h1 className="pokeName2">{pokeName2}</h1>
       </div>
+    </div>
     </div>
     </div>
  

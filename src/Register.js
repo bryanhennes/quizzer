@@ -49,6 +49,7 @@ export default function Register() {
     <div className="registerUser">
         <br></br>
         <h3>Sign Up</h3>
+        <br></br>
         <input placeholder="Email..." onChange={(e) => {
           setRegisterEmail(e.target.value);
         }}/>

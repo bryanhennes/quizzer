@@ -113,12 +113,35 @@ html {
 
 
 .mainPage {  
-    width: 50%;
-    margin: auto;
-    padding: 200px;
-    text-align: center;
-    font-family: 'open-sans';
+  display: flex;
+  padding-top: 200px;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'open-sans';
 }
+
+input {
+  padding: 12px 20px;
+}
+
+.mainPage h3{
+  font-size: 30px;
+}
+
+/*desktop */
+@media screen and (min-width: 768px) {
+  .mainPage {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;  
+  } 
+
+  input {
+    padding: 5px 14px;
+  }
+}
+
 
 
 
@@ -225,12 +248,34 @@ button:after {
 }
 
 /*Register.js*/
-.registerUser {
-  margin: auto;
-  width: 50%;
-  padding: 200px;
-  text-align: center;
+.registerUser {  
+  display: flex;
+  padding-top: 200px;
+  flex-direction: column;
+  align-items: center;
   font-family: 'open-sans';
+}
+
+input {
+  padding: 12px 20px;
+}
+
+.registerUser h3{
+  font-size: 30px;
+}
+
+/*desktop */
+@media screen and (min-width: 768px) {
+  .registerUser {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;  
+  } 
+
+  input {
+    padding: 5px 14px;
+  }
 }
 
 
@@ -369,10 +414,10 @@ animation-timing-function: steps(2, end);
 /* LoginForm */
 
 .form-inner {
-  width: 50%;
-  margin: auto;
-  padding: 200px;
-  text-align: center;
+  display: flex;
+  padding-top: 200px;
+  flex-direction: column;
+  align-items: center;
   font-family: 'open-sans';
 }
 

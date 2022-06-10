@@ -57,8 +57,8 @@ export default function Login() {
     
     <div className="mainPage">
       <Stylesheet primary ={true}/>
-        <br></br>
         <h3>Login</h3>
+        <br></br>
         <input placeholder="Email..." onChange={(e) => {
           setloginEmail(e.target.value);
         }}/>
@@ -67,12 +67,10 @@ export default function Login() {
           setloginPassword(e.target.value);
         }}/>
         <br></br>
-        <br></br>
         <div className="LoginButton">
         <button onClick={login}>Login</button>
         </div>
-        <br></br>
-        <br></br>
+      
         <div className="toast">
         <ToastContainer
           position="top-center"

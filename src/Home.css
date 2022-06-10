@@ -1,11 +1,9 @@
 
 .mainHome {
-    overflow-y:auto;
-    width: 50%;
-    margin: auto;
-    padding: 200px;
-    text-align: center;
-    font-family: 'open-sans';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'open-sans';
 }
 
 @media screen and (max-width: 415px){

@@ -3,25 +3,28 @@ html, body {
 
 }
 
-.card {
-    height:400px;
-  }
 
 
- img {
-    width: 300px;
-    height: 300px;
+
+ .startGame img {
+    width: 225px;
+    height: 225px;
     margin: auto;
-    border-radius: 8px;
+    border-radius: 0;
     object-fit: cover;
     
-  }
+ }
 
   .startGame {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: small;
+    text-align: center;
+
   }
+
+  
 
   
  
@@ -55,7 +58,8 @@ html, body {
     font-family: 'open-sans';
     cursor: pointer;
     text-align: center;
-    
+    padding-top: 2vw;
+    padding-bottom: 2vw;
    
   
   }
@@ -65,19 +69,44 @@ html, body {
     font-family: 'open-sans';
     cursor: pointer;
     text-align: center;
-   
   
   }
+
+  .pokeCards {
+    top:0;
+  }
   
-  
+  /* Desktop  */
   @media screen and (min-width: 768px) {
-    .pokeCard1 {
+
+    .startGame {
+      padding-top: 50px;
+      font-size: large;
+    }
+    .pokeCards {
       display: flex;
+      justify-content: space-between;
       flex-direction: row;
-      align-items: center;
+      align-items: center;  
+    } 
+
+    .startGame img {
+      width: 300px;
+      height: 300px;
+      margin: auto;
+      object-fit: cover;
       
     }
+
+    .pokeCard1 {
+      padding-right: 15vw;
+    }
+
+
   }
+
+  /* Mobile  */
+ 
   
 
   .startGame button {
@@ -97,7 +126,7 @@ html, body {
     line-height: 20px;
     margin: 0 5px 10px 0;
     overflow: visible;
-    padding: 12px 40px;
+    padding: 6px 34px;
     text-align: center;
     text-transform: none;
     touch-action: manipulation;
