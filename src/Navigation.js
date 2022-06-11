@@ -85,6 +85,7 @@ const logout = async () => {
 
 
 <Routes>
+<Route path="/" element={<Home />} />
 <Route path="/Profile" element={<Profile />} />
 <Route path="/Register" element={<Register />} />
 <Route path="/Home" element={<Home />} />

@@ -8,10 +8,10 @@ import { Navigate, useNavigate } from 'react-router-dom';
 export default function LoginForm({Login, error}) {
     const [users, setUsers] = useState([]);
     const [newName, setNewName] = useState("");
-    const [newUn, setNewUn] = useState("");
+    const [email, setEmail] = useState("");
     const [newCountry, setNewCountry] = useState("");
     const [userId, setUid] = useState({});
-
+    const [newUn, setNewUn] = useState("");
     let navigate = useNavigate();
 
     let today = new Date();
@@ -20,14 +20,15 @@ export default function LoginForm({Login, error}) {
     useEffect(()=> {
         onAuthStateChanged(auth, (currentUser) => {
           setUser(currentUser);
-          
+          setEmail(user.email);
         });
       });
     const [user, setUser] = useState({});
   
 
     const createUser = async () => {
-      console.log(user.uid);
+      if(newUn === "")
+        setNewUn(user.email);
       await set(ref(realDb, 'users/' + user.uid),{
 				firstname: newName,
 				username: newUn,

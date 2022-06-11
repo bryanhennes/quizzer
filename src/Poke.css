@@ -159,4 +159,9 @@ html, body {
       padding: 12px 50px;
     }
   }
+
+  #leaderboard-display {
+    font-size: 20px;
+  }
+
   

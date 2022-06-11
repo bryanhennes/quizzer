@@ -63,7 +63,7 @@ export default function Home() {
           </div>
         <div class="flip-card-back">
           <h1></h1>
-          <h2>Which Pokemon has a higher weight?</h2>
+          <h2>Which Pokemon Weighs More?</h2>
           <button className="playButton" onClick={goToGame}>Play</button>
       
         </div>

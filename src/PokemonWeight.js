@@ -30,6 +30,7 @@ export default function PokemonWeight() {
   const [lastStreak, setLastStreak] = useState(0); //keep track of user's streak
   const [oldStreak, setOldStreak] = useState(0); //get previous streak from user database
   const [isPlaying, setPlaying] = useState(false); //is currently playing game
+  const [buttonText, setButtonText] = useState('Start Game');
   const imageMap = {};
   const pokeMap = {};
   const usersList= [];
@@ -39,7 +40,9 @@ export default function PokemonWeight() {
   const[leaderBoard, setLeaderboard] = useState("");
   const [users, setUsers] = useState([]);
   const [loadCounter, setCounter] = useState(0);
+  const [value, setValue] = useState('initial');
   let navigate = useNavigate();
+  
   //open summary dialog
   const handleOpen = () => {
     //displayLeaderboards();
@@ -63,6 +66,7 @@ export default function PokemonWeight() {
     setImgSrc1(pic);
     setImgSrc2(pic);
     setUsers([]);
+    setButtonText('Start Game');
   };
 
 
@@ -77,7 +81,7 @@ export default function PokemonWeight() {
 
   const [user, setUser] = useState({});
   useEffect(()=> {
-    
+    console.log(document.readyState);
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       readTotal();
@@ -85,7 +89,10 @@ export default function PokemonWeight() {
       listImages();
       getPokemon();
     });
+    
   });
+
+  
 
   //display 2 randomly selected pokemon
   const displayPokemon = () => {
@@ -246,8 +253,14 @@ export default function PokemonWeight() {
     if(user === null){
       navigate('/Login');
     }
+
+    else if(isPlaying){
+      showResults();
+    }
+
     else{
     //setUsers([]);
+    setButtonText('End Game');
     populateUsers();
     setStreak(0);
     setShowLeaderboards(false);
@@ -265,7 +278,7 @@ export default function PokemonWeight() {
         startGame();
       }
 
-      //console.log(selection1 + " weighs: " + pokeMap[selection1] + " vs " + selection2 + " weighs: " + pokeMap[selection2]);
+      console.log(selection1 + " weighs: " + pokeMap[selection1] + " vs " + selection2 + " weighs: " + pokeMap[selection2]);
     }
   }
 
@@ -285,7 +298,7 @@ export default function PokemonWeight() {
       <h2>Current Streak: {streak}</h2>
       <h2>Best Streak: {oldStreak}</h2>
       <br></br>
-      <button className="startGameButton" onClick={startGame}>Start Game</button>
+      <button className="startGameButton" onClick={startGame}>{buttonText}</button>
       <div className="pokeCards">
       <div className="pokeCard1" id="poke1" onClick={checkWinner}>
       <div className="card-poke1">
@@ -313,7 +326,7 @@ export default function PokemonWeight() {
       <h1>Leaderboards</h1>
   </div>*/}
 
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog className="leaderboard-dialog"open={open} onClose={handleClose}>
     {(!showLeaderboards) ? (
             <>
           <DialogTitle>
@@ -346,7 +359,7 @@ export default function PokemonWeight() {
           <DialogContentText>
             {users.map((user)=>{
               return (
-                <h1>{`${user.username}: ${user.poke_highscore}`}</h1>
+                <h1 id="leaderboard-display">{`${user.username}: ${user.poke_highscore}`}</h1>
               );
             })}
           </DialogContentText>
