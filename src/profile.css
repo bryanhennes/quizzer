@@ -8,3 +8,17 @@ img {
     align-items: center;
     font-family: 'open-sans';
 }
+
+.profile-card {
+    box-shadow: 0 4px 8px 0 rgb(250, 249, 249);
+    width: 600px;
+    text-align: center;
+    background-color: #FF013C;
+  }
+
+  .achievements-card {
+    box-shadow: 0 4px 8px 0 rgb(250, 249, 249);
+    width: 600px;
+    text-align: center;
+    background-color: #FF013C;
+  }
