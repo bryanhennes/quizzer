@@ -2,9 +2,11 @@ import React, {useState, useEffect, setState} from 'react';
 import { db, auth, realDb } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import userEvent from '@testing-library/user-event';
-import './profile.css';
+import Stylesheet from './ProfileStyleSheet';
 import pic from './handsomesquidward.jpg';
+import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate, useParams } from "react-router-dom";
 import {getDatabase, ref, set, child, update, remove, onValue, get} from "firebase/database";
+
 
 
 export default function Profile() {
@@ -13,14 +15,14 @@ export default function Profile() {
   const [newUn, setUsername] = useState("");
   const [newCountry, setCountry] = useState("");
   const [date, setDate] = useState("");
-
+  const [user, setUser] = useState({});
   useEffect(()=> {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       readData();
     });
   });
-  const [user, setUser] = useState({});
+  
 
   //reference user in database
   const userRef = ref(realDb, 'users/'+user.uid);
@@ -40,11 +42,15 @@ export default function Profile() {
 
   return (
     <div className="profile">
-    <div class="card">
+    <div class="profile-card">
     <img src={pic} alt="Person"/>
     <h1>{newUn}</h1>
     <p>Country: {newCountry}</p>
     <p>Member Since: {date}</p>
+    </div>
+    <br></br>
+    <div className="achievements-card">
+      <h1>Achievements</h1>
     </div>
     
     

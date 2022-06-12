@@ -16,6 +16,9 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import Login from "./Login";
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { isReactNative } from "@firebase/util";
 
 export default function PokemonWeight() {
 
@@ -34,6 +37,7 @@ export default function PokemonWeight() {
   const imageMap = {};
   const pokeMap = {};
   const usersList= [];
+  const mileStones = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   const [leaderboardUsers, setLeaderboardUsers] = useState(new Map());
   const [open, setOpen] = useState(false);
   const [showLeaderboards, setShowLeaderboards] = useState(false);
@@ -47,10 +51,25 @@ export default function PokemonWeight() {
   const handleOpen = () => {
     //displayLeaderboards();
     users.sort((a, b) => (a.poke_highscore < b.poke_highscore) ? 1 : -1);
-    console.log(users);
+    alertNewBest();
     getLeaderboardString();
     setOpen(true);
   };
+
+  //display streak milestones
+  const checkStreak = () => {
+    console.log(streak);
+    if(mileStones.includes(streak+1))
+      toast(`${streak+1} streak!`);
+  }
+
+
+  const alertNewBest = () => {
+    if(console.log(streak));
+    if(streak > oldStreak){
+      toast(`New Personal Best: ${streak} Streak!`);
+    }
+  }
 
  
   
@@ -81,7 +100,6 @@ export default function PokemonWeight() {
 
   const [user, setUser] = useState({});
   useEffect(()=> {
-    console.log(document.readyState);
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       readTotal();
@@ -131,6 +149,7 @@ export default function PokemonWeight() {
     }).catch((error) => {
       // Uh-oh, an error occurred!
     });
+
   }
 
   //this does successfully loop through all pokemon in database
@@ -166,8 +185,9 @@ export default function PokemonWeight() {
     })
   }
 
+  //show top ten users in terms of poke highscore
   const populateUsers = async () => {
-      const recentUsers = query(ref(realDb, 'users/'), orderByChild("poke_highscore", "desc"));
+      const recentUsers = query(ref(realDb, 'users/'), orderByChild("poke_highscore", "desc"), limitToLast(10));
       get(recentUsers)
       .then((snapshot)=> {
 
@@ -202,21 +222,17 @@ export default function PokemonWeight() {
       setWeight2(pokeMap[pokeName2]);
     if(e.currentTarget.id === "poke1" && pokeMap[pokeName1] > pokeMap[pokeName2]){
       setStreak(streak+1);
+      checkStreak();
       setLastStreak(lastStreak+1);
       displayPokemon();
     }
     else if(e.currentTarget.id === "poke2" && pokeMap[pokeName2] > pokeMap[pokeName1]){
       setStreak(streak+1);
+      checkStreak();
       setLastStreak(lastStreak+1);
       displayPokemon();
     }
 
-    //if pokemon have equal weight and equal button is selected it should be correct
-    else if(e.currentTarget.id === "equal" && pokeMap[pokeName2] === pokeMap[pokeName1]){
-      setStreak(streak+1);
-      setLastStreak(lastStreak+1);
-      displayPokemon();
-    }
     else {
       if(streak > oldStreak)
         setHighscore();
@@ -227,6 +243,7 @@ export default function PokemonWeight() {
     
   }
 
+ 
 
  
 
@@ -299,21 +316,35 @@ export default function PokemonWeight() {
       <h2>Best Streak: {oldStreak}</h2>
       <br></br>
       <button className="startGameButton" onClick={startGame}>{buttonText}</button>
+      <div className="timer">
+      </div>
       <div className="pokeCards">
       <div className="pokeCard1" id="poke1" onClick={checkWinner}>
       <div className="card-poke1">
-      <img src={imgSrc1}></img>
+      <img src={imgSrc1} alt={pokeName1}></img>
         <h1 className="pokeName1">{pokeName1}</h1>
       </div>
     </div>
 
     <div className="pokeCard2" id="poke2" onClick={checkWinner}>
       <div className="card-poke2">
-      <img src={imgSrc2} alt="cover"/>
+      <img src={imgSrc2} alt={pokeName2}/>
       <h1 className="pokeName2">{pokeName2}</h1>
       </div>
     </div>
     </div>
+    <ToastContainer
+          position="top-center"
+          closeButton={false}
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
     </div>
  
     
