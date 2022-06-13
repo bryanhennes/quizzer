@@ -70,13 +70,13 @@ export default function Home() {
       </div>
     </div>
     <br></br>
-    <button className="pokeHelperButton" onClick={pokeHelper}>Add Pokemon</button>
+    {/*<button className="pokeHelperButton" onClick={pokeHelper}>Add Pokemon</button>
     <input type="text" placeholder="Pokemon name" value={pokeName} onChange={(e) => {
           setName(e.target.value);
         }}/>
     <input type="number" placeholder="Pokemon weight" value={pokeWeight} onChange={(e) => {
           setWeight(e.target.value);
-        }}/>
+        }}/>*/}
       </div>
     
     </>
