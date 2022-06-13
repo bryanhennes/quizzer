@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navi
 import { db, auth, realDb } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import {getDatabase, ref, set, child, update, remove, onValue, get, query, limitToLast, orderByChild} from "firebase/database";
-import pic from './whopokemon.jpg';
+import pic from './pokeball.png';
 import Stylesheet from './PokeStyleSheet';
 import {storage} from './firebase-config';
 import { ref as sRef, getDownloadURL, listAll } from 'firebase/storage';
