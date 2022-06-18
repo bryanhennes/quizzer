@@ -114,10 +114,14 @@ html {
 
 .mainPage {  
   display: flex;
-  padding-top: 200px;
+  padding-top: 0px;
   flex-direction: column;
   align-items: center;
   font-family: 'open-sans';
+}
+
+.mainPage img {
+  border-radius: 0;
 }
 
 input {
@@ -250,7 +254,7 @@ button:after {
 /*Register.js*/
 .registerUser {  
   display: flex;
-  padding-top: 200px;
+  padding-top: 0px;
   flex-direction: column;
   align-items: center;
   font-family: 'open-sans';
@@ -605,5 +609,151 @@ animation-timing-function: steps(2, end);
   margin-left: 800px;
   margin-top: 200px;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+
+
+:root {
+  --clr-white: radial-gradient(circle, rgb(220, 63, 251) 0%, rgb(103, 70, 252) 100%);
+  --clr-pink: #FF013C;
+  --brd-radius: 5px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sign-up-card h1 {
+  text-align: center;
+  color: white;
+  padding-bottom: 5px;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 500;
+  background-color: #FF013C;
+  font-family: "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+}
+
+
+.section-sign-up {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0.5rem;
+}
+.section-sign-up .sign-up-card {
+  max-width: 320px;
+  background-color: var(--clr-white);
+  border-radius: var(--brd-radius);
+  overflow: hidden;
+  box-shadow: black 0px 3px 8px;
+}
+
+.section-sign-up .sign-up-card .view {
+  position: relative;
+}
+.section-sign-up .sign-up-card .view:before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  height: 80px;
+  width: 100%;
+  background-color: var(--clr-white);
+  transform: skewY(-10deg);
+  bottom: -40px;
+}
+.section-sign-up .sign-up-card .view img {
+  width: 100%;
+}
+.section-sign-up .sign-up-card .view .check {
+  height: 60px;
+  width: 60px;
+  background-color: #50d2c2;
+  position: absolute;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 30px;
+  color: #fff;
+  line-height: 60px;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.section-sign-up .sign-up-card .form {
+  position: relative;
+  z-index: 3;
+  background: rgb(63,94,251);
+  background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);;
+  padding: 1rem 1rem 1rem 1rem;
+}
+
+.section-sign-up .sign-up-card .form .form-control {
+  margin-bottom: 15px;
+}
+.section-sign-up .sign-up-card .form label {
+  display: block;
+  width: 100%;
+  font-size: 13px;
+  color: #bababa;
+}
+.section-sign-up .sign-up-card .form input {
+  width: 100%;
+  font-size: 16px;
+  margin-top: 3px;
+  padding: 6px;
+  transition: all 0.15s linear;
+  border: 1px solid #bababa;
+  border-radius: var(--brd-radius);
+  background-color: #f4f8fb;
+}
+.section-sign-up .sign-up-card .form input:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.section-sign-up .sign-up-card .form .btn-sign-up {
+  width: 100%;
+  display: inline-block;
+  padding: 0.6rem 0.5rem;
+  background-color: var(--clr-pink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Lato", sans-serif;
+  border: 1px solid var(--clr-pink);
+  border-radius: var(--brd-radius);
+  cursor: pointer;
+  transition: all 0.2s linear;
+  margin-top: 5px;
+}
+.section-sign-up .sign-up-card .form .btn-sign-up:hover {
+  background-color: transparent;
+  color: var(--clr-pink);
+}
+
+.section-sign-up .sign-up-card .form .more {
+  display: flex;
+  justify-content: space-between;
+}
+.section-sign-up .sign-up-card .form .more a {
+  text-decoration: none;
+  font-size: 11px;
+  display: inline-block;
+}
+
+.section-sign-up .sign-up-card .form .more .forget-password-link {
+  color: white;
+}
+.section-sign-up .sign-up-card .form .more .sign-in-link {
+  color: white;
 }
 

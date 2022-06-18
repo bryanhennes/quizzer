@@ -4,7 +4,7 @@ import { db, auth, realDb } from "./firebase-config";
 import {getDatabase, ref, set, child, update, remove, onValue, get} from "firebase/database";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate } from "react-router-dom";
-import pic from './pokemon.jpg';
+import pic from './pokemoncover2.jpg';
 import PokemonWeight from "./PokemonWeight";
 
 

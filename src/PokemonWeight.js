@@ -4,6 +4,7 @@ import { db, auth, realDb } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import {getDatabase, ref, set, child, update, remove, onValue, get, query, limitToLast, orderByChild} from "firebase/database";
 import pic from './pokeball.png';
+import moment from "react-moment";
 import Stylesheet from './PokeStyleSheet';
 import {storage} from './firebase-config';
 import { ref as sRef, getDownloadURL, listAll } from 'firebase/storage';
@@ -21,7 +22,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function PokemonWeight() {
 
+
   const [pokeName1, setName] = useState("");
+  const [sum, setSum] = useState(0);
   const [pokeWeight1, setWeight] = useState(() => {
     return "";
   });
@@ -43,13 +46,21 @@ export default function PokemonWeight() {
   const [oldStreak, setOldStreak] = useState(0); //get previous streak from user database
   const [isPlaying, setPlaying] = useState(false); //is currently playing game
   const [buttonText, setButtonText] = useState('Start Game');
+  const [files, setFiles] = useState({});
   const imageMap = {};
+  const [scoreTotal, setScoreTotal] = useState(0);
+  const [finalImageMap, setMap] = useState({});
   const pokeMap = {};
+  const [date, setDate] = useState("");
+  const [scoreCounter, setScoreCounter] = useState(0);
   const usersList= [];
   const mileStones = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   const [open, setOpen] = useState(false);
   const [showLeaderboards, setShowLeaderboards] = useState(false);
+  const [averageScore, setAverageScore] = useState(0);
   const [isActive, setActive] = useState(false);
+  const [isDisabled, setDisabled] = useState(true);
+  const [buttonActive, setButtonActive] = useState(false);
   const [users, setUsers] = useState(() => {
     return [];
   });
@@ -58,8 +69,16 @@ export default function PokemonWeight() {
 
 
 
+
+  //fetch all image download urls from database before allowing game to begin
   useEffect(()=> {
     listImages();
+    setTimeout(() => {
+      setDisabled(false);
+    }, 2000);
+  }, []);
+  
+  useEffect(()=> {
     readTotal();
     getPreviousHighScore();
     getPokemon();
@@ -75,6 +94,7 @@ export default function PokemonWeight() {
     users.sort((a, b) => (a.poke_highscore < b.poke_highscore) ? 1 : -1);
     setActive(false);
     alertNewBest();
+    //getAverageScore();
     setOpen(true);
   };
 
@@ -125,11 +145,10 @@ export default function PokemonWeight() {
   const displayPokemon = () => {
     const selection1 = getRandomSelection(pokeMap);
     const selection2 = getRandomSelection(pokeMap);
-    console.log(selection1 + ", " + selection2);
     if(selection1 !== selection2 && pokeMap[selection1] !== pokeMap[selection2]){
-    setImgSrc1(imageMap[selection1]);
+    setImgSrc1(finalImageMap[selection1]);
     setName(selection1);
-    setImgSrc2(imageMap[selection2]);
+    setImgSrc2(finalImageMap[selection2]);
     setName2(selection2);
     
     }
@@ -158,7 +177,7 @@ export default function PokemonWeight() {
     }).catch((error) => {
       // Uh-oh, an error occurred!
     });
-
+    setMap(imageMap);
   }
 
   //this does successfully loop through all pokemon in database
@@ -175,15 +194,6 @@ export default function PokemonWeight() {
     
   }
 
-  
-
-  const displayLeaderboards = async () => {
-    //users.reverse();
-    users.forEach(element => {    
-      usersList.push({username : element.username});
-      usersList.push({highscore : element.poke_highscore});
-    })
-  }
 
   //show top ten users in terms of poke highscore
   const populateUsers = async () => {
@@ -244,6 +254,7 @@ const checkWinner = e => {
     setActive(false);
     if(streak > oldStreak)
       setHighscore();
+    //setScore();
     showResults();
   }
   
@@ -257,6 +268,43 @@ const checkWinner = e => {
       poke_highscore: streak,
   })
   }
+
+  const setScore = async () => {
+    setScoreCounter(scoreCounter+1);
+    update(ref(realDb, 'users/' + user.uid + '/poke_attempts/'+scoreCounter), {
+      score: streak,
+  })
+  }
+
+  const getAverageScore = async () => {
+    const totalRef = ref(realDb, 'users/' + user.uid + '/poke_attempts/');
+    onValue(totalRef, (snapshot) => {
+      if(snapshot.exists()){
+        setScoreTotal(snapshot.size);
+        console.log(scoreTotal);
+      }     
+  })
+    var tempSum = 0;
+    for(var i = 1; i <= scoreTotal; i++){
+    const userRef = ref(realDb, 'users/'+user.uid +'/poke_attempts/'+i);
+    onValue(userRef, (snapshot) => {
+      if(snapshot.exists()){
+      const data = snapshot.val();
+        console.log(`score${i}: ` + data?.score);
+        //setSum(sum + data?.score);
+        tempSum += data?.score;
+        console.log("sum so far: " + tempSum);
+      }
+      else {
+      }   
+  })
+  }
+  console.log(`${tempSum} / ${scoreTotal}`);
+  setAverageScore(tempSum/scoreTotal);
+  console.log(Math.trunc(averageScore));
+}
+
+  
 
   //get total number of pokemon in database currently
   const readTotal = async () => {
@@ -282,7 +330,7 @@ const checkWinner = e => {
     }
 
     else{
-    setActive(true);
+    //setActive(true);
     setButtonText('End Game');
     populateUsers();
     setStreak(0);
@@ -292,17 +340,21 @@ const checkWinner = e => {
     const selection1 = getRandomSelection(pokeMap);
     const selection2 = getRandomSelection(pokeMap);
     if(selection1 !== selection2 && pokeMap[selection1] !== pokeMap[selection2]){
-      setImgSrc1(imageMap[selection1]);
+      setActive(true);
+      //console.log(finalImageMap);
+      setImgSrc1(finalImageMap[selection1]);
       setName(selection1);
-      setImgSrc2(imageMap[selection2]);
+      setImgSrc2(finalImageMap[selection2]);
       setName2(selection2);
       setWeight(pokeMap[selection1]);
       setWeight2(pokeMap[selection2]);
       }
       else{
         startGame();
+        //console.log('recalling');
       }
     }
+    //console.log(imageMap);
   }
 
 
@@ -320,7 +372,12 @@ const checkWinner = e => {
       <h2>Current Streak: {streak}</h2>
       <h2>Best Streak: {oldStreak}</h2>
       <br></br>
-      <button className="startGameButton" onClick={startGame}>{buttonText}</button>
+      {(isDisabled) ? (
+            <h2>Loading Pokemon...</h2>
+          ):(
+            <button className="startGameButton" onClick={startGame}>{buttonText}</button>
+        )}
+      
       <div id="circular" class="circular">
         <div class="inner">
 

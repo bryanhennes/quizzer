@@ -10,6 +10,7 @@ import Stylesheet from './NavStyleSheet';
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate, useParams } from "react-router-dom";
 import { db, auth } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
+import ProfileEdit from "./ProfileEdit";
 
 
 
@@ -62,9 +63,6 @@ const logout = async () => {
           </li> 
           {(user != null) ? (
             <>
-            <li>
-            <a href="/Profile">Profile</a>
-            </li>
             <p>{user?.email}</p>
             <li>
             <a onClick={logout}>Sign Out</a>
@@ -86,12 +84,13 @@ const logout = async () => {
 
 <Routes>
 <Route path="/" element={<Home />} />
-<Route path="/Profile" element={<Profile />} />
+{/*<Route path="/Profile" element={<Profile />} />*/}
 <Route path="/Register" element={<Register />} />
 <Route path="/Home" element={<Home />} />
 <Route path="/LoginForm" element={<LoginForm />} />
 <Route path="/Login" element={<Login />} />
 <Route path="/PokemonWeight" element={<PokemonWeight />} />
+<Route path="/ProfileEdit" element={<ProfileEdit />} />
 
 </Routes>
 </Router>

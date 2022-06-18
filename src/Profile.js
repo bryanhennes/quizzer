@@ -22,7 +22,7 @@ export default function Profile() {
       readData();
     });
   });
-  
+  let navigate = useNavigate();
 
   //reference user in database
   const userRef = ref(realDb, 'users/'+user.uid);
@@ -40,6 +40,10 @@ export default function Profile() {
   })
 }
 
+const goToEdit = () => {
+  navigate('/ProfileEdit');
+}
+
   return (
     <div className="profile">
     <div class="profile-card">
@@ -47,6 +51,7 @@ export default function Profile() {
     <h1>{newUn}</h1>
     <p>Country: {newCountry}</p>
     <p>Member Since: {date}</p>
+    <button onClick={goToEdit}>Edit Profile</button>
     </div>
     <br></br>
     <div className="achievements-card">
