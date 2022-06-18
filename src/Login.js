@@ -27,8 +27,10 @@ export default function Login() {
   }
 
   
-
-
+  const handleSubmit = event => {
+    event.preventDefault()
+    login();
+  }
 
   const login = async () => {
     try{
@@ -45,6 +47,10 @@ export default function Login() {
     await signOut(auth);
   }
 
+  const goToRegister = async () => {
+    navigate('/Register');
+  }
+
   const [user, setUser] = useState({});
 
   useEffect(()=> {
@@ -57,7 +63,7 @@ export default function Login() {
     
     <div className="mainPage">
       <Stylesheet primary ={true}/>
-        <h3>Login</h3>
+        {/*<h3>Login</h3>
         <br></br>
         <input placeholder="Email..." onChange={(e) => {
           setloginEmail(e.target.value);
@@ -69,7 +75,32 @@ export default function Login() {
         <br></br>
         <div className="LoginButton">
         <button onClick={login}>Login</button>
-        </div>
+      </div>*/}
+
+<section className="section-sign-up">
+  <div className="sign-up-card">
+  <h1>Quizzer</h1>
+    <form onSubmit={handleSubmit} className="form">
+      <div className="form-control">
+        <input id="email" type="email" name='email' autocomplete="email" onChange={(e) => {
+          setloginEmail(e.target.value);
+        }}/>
+      </div>
+      <div className="form-control">
+       
+        <input id="password" type="password" name='password'  autocomplete="password" onChange={(e) => {
+          setloginPassword(e.target.value);
+        }}/>
+      </div>
+      <div className="form-control">
+        <button className="btn-sign-up" type='submit'>Log In</button>
+      </div>
+      <div className="more">
+        <a onClick={goToRegister} className="forget-password-link">Don't have an account? Sign up.</a>
+      </div>
+    </form>
+  </div>
+</section>
       
         <div className="toast">
         <ToastContainer
