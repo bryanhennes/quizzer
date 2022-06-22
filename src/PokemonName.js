@@ -20,6 +20,7 @@ import Login from "./Login";
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { css } from 'glamor';
 
 export default function PokemonName() {
 
@@ -98,7 +99,7 @@ const [isActive, setIsActive] = useState(false);
 
 useEffect(()=> {
     listImages();
-    getPreviousHighScore();
+    //getPreviousHighScore();
     setTimeout(() => {
       setDisabled(false);
     }, 2000);
@@ -106,7 +107,7 @@ useEffect(()=> {
 
 useEffect(()=> {
     readTotal();
-    //getPreviousHighScore();
+    getPreviousHighScore();
     //getPokemon();
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -166,10 +167,6 @@ const getRandomSelection = (collection) => {
 
 const getChoices = async (currentSelection) => {
   let choices = [currentSelection, getRandomSelection(finalImageMap), getRandomSelection(finalImageMap), getRandomSelection(finalImageMap)];
-  /*setBtn1Text(currentSelection);
-  setBtn2Text(getRandomSelection(finalImageMap));
-  setBtn3Text(getRandomSelection(finalImageMap));
-  setBtn4Text(getRandomSelection(finalImageMap));*/
   choices = choices.sort(() => Math.random() - 0.5);
   setBtn1Text(choices[0]);
   setBtn2Text(choices[1]);
@@ -179,10 +176,10 @@ const getChoices = async (currentSelection) => {
 }
 
 const clearChoices = async () => {
-  setBtn1Text("choice 1");
-  setBtn2Text("choice 2");
-  setBtn3Text("choice 3");
-  setBtn4Text("choice 4");
+  setBtn1Text("?");
+  setBtn2Text("?");
+  setBtn3Text("?");
+  setBtn4Text("?");
 }
 
 //check if selected answer is correct
@@ -191,7 +188,7 @@ const checkWinner = e => {
     if(isPlaying){
 
     if(e.target.innerHTML === pokeName){
-      toast('correct');
+      customToast.success('Correct!');
       setStreak(streak+1);
       //checkStreak();
       setLastStreak(lastStreak+1);  
@@ -199,7 +196,9 @@ const checkWinner = e => {
      
     }
     else {
-      toast('Wrong');
+      //toast.error('Wrong');
+      customToast.error('Wrong!');
+      displayPokemon();
     }
   }
   }
@@ -229,15 +228,6 @@ const startGame = async () => {
     setName(selection);
     getChoices(selection);
     }
-    //console.log(imageMap);
-  }
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    console.log(event.target[0].value)
-    checkWinner();
-    setAnswer("");
-    event.target.reset();
   }
 
   const showResults = async () => {
@@ -269,7 +259,6 @@ const getPreviousHighScore = async () => {
       }
       else {
         console.log('does not exist');
-        setOldStreak(0);
         //should set users poke highscore to 0 if it doesnt already exist in database
       }   
   })
@@ -307,6 +296,36 @@ const handleClose = () => {
     setButtonText('Start Game');
   };
 
+  const customToast = {
+    success(msg, options = {}) {
+      return toast.success(msg, {
+        ...options,
+        className: 'toast-success-container toast-success-container-after',
+        progressClassName: css({
+          background: '#34A853',
+        }),
+      });
+    },
+    error(msg, options = {}) {
+      return toast.error(msg, {
+        ...options,
+        className: 'toast-error-container toast-error-container-after',
+        progressClassName: css({
+          background: '#ee0010',
+        }),
+      });
+    },
+    info(msg, options = {}) {
+      return toast.info(msg, {
+        ...options,
+        className: 'toast-info-container toast-info-container-after',
+        progressClassName: css({
+          background: '#07F',
+        }),
+      });
+    },
+  };
+
 
 
   return (
@@ -315,6 +334,7 @@ const handleClose = () => {
     <div className="startGame-pokename">
       <h1>Name That Pokemon!</h1>
       <h2>Correct: {streak}</h2>
+      <h2>Best: {oldStreak}</h2>
       <h2>Time Remaining: { minutes }:{ seconds < 10 ? `0${ seconds }` : seconds }</h2>
       {/*<h2>Best Streak: {oldStreak}</h2>*/}
       <br></br>
@@ -361,7 +381,8 @@ const handleClose = () => {
     </div>
     </div>
     <ToastContainer
-          position="top-center"
+          position="bottom-center"
+          className="toast-container"
           closeButton={false}
           autoClose={300}
           hideProgressBar={false}
