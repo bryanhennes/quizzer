@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navi
 import { db, auth } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
 import ProfileEdit from "./ProfileEdit";
+import PokemonName from "./PokemonName";
 
 
 
@@ -91,6 +92,7 @@ const logout = async () => {
 <Route path="/Login" element={<Login />} />
 <Route path="/PokemonWeight" element={<PokemonWeight />} />
 <Route path="/ProfileEdit" element={<ProfileEdit />} />
+<Route path="/PokemonName" element={<PokemonName />} />
 
 </Routes>
 </Router>

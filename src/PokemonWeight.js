@@ -14,11 +14,20 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
+import { makeStyles } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import Login from "./Login";
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getAnalytics, logEvent } from "firebase/analytics";
+
+const useStyles = makeStyles({
+  dialog: {
+    textAlign: "left"
+  }
+});
+
 
 export default function PokemonWeight() {
 
@@ -46,29 +55,23 @@ export default function PokemonWeight() {
   const [oldStreak, setOldStreak] = useState(0); //get previous streak from user database
   const [isPlaying, setPlaying] = useState(false); //is currently playing game
   const [buttonText, setButtonText] = useState('Start Game');
-  const [files, setFiles] = useState({});
   const imageMap = {};
   const [scoreTotal, setScoreTotal] = useState(0);
   const [finalImageMap, setMap] = useState({});
   const pokeMap = {};
-  const [date, setDate] = useState("");
   const [scoreCounter, setScoreCounter] = useState(0);
-  const usersList= [];
   const mileStones = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   const [open, setOpen] = useState(false);
   const [showLeaderboards, setShowLeaderboards] = useState(false);
   const [averageScore, setAverageScore] = useState(0);
   const [isActive, setActive] = useState(false);
   const [isDisabled, setDisabled] = useState(true);
-  const [buttonActive, setButtonActive] = useState(false);
   const [users, setUsers] = useState(() => {
     return [];
   });
   let navigate = useNavigate();
 
-
-
-
+  
 
   //fetch all image download urls from database before allowing game to begin
   useEffect(()=> {
@@ -362,6 +365,8 @@ const checkWinner = e => {
     handleOpen();
   }
 
+  const classes = useStyles()
+
   
   return (
     <>
@@ -417,7 +422,7 @@ const checkWinner = e => {
           position="top-center"
           closeButton={false}
           autoClose={2000}
-          hideProgressBar={false}
+          hideProgressBar={true}
           newestOnTop={false}
           closeOnClick
           rtl={false}
@@ -427,17 +432,10 @@ const checkWinner = e => {
         />
     </div>
  
-    
 
-    {/*<div className="equalButton">
-      <button onClick={checkWinner} id="equal">Same Weight</button>
-    </div>
-
-    <div className="leaderboard">
-      <h1>Leaderboards</h1>
-  </div>*/}
-
-    <Dialog className="leaderboard-dialog"open={open} onClose={handleClose}>
+    <Dialog className="leaderboard-dialog"open={open} onClose={handleClose} classes={{
+        paper: classes.dialog
+      }}>
     {(!showLeaderboards) ? (
             <>
           <DialogTitle>

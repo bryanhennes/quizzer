@@ -1,88 +1,11 @@
 
 .mainHome {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   font-family: 'open-sans';
+  border-radius: 0;
 }
 
-@media screen and (max-width: 415px){
-  .container {
-  display: flex;
-  flex-direction: column;
-  }
-}
-.pokeHelperButton{
-  cursor:pointer;
-  position: relative;
-  top:120px;
-}
-
-
-
-.flip-card {
-    background-color: transparent;
-    width: 300px;
-    height: 200px;
-    border: none;
-    perspective: 1000px; /* Remove this if you don't want the 3D effect */
-  }
-
-  .flip-card button {
-      margin: auto;
-      margin-top: 30px;
-      cursor: pointer;
-  }
-  
-  /* This container is needed to position the front and back side */
-  .flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-  }
-  
-  .flip-card img {
-    width: 300px;
-    height: 200px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-  
-  /* Do an horizontal flip when you move the mouse over the flip box container */
-  .flip-card:hover .flip-card-inner {
-    transform: rotateY(180deg);
-  }
-  
-  /* Position the front and back side */
-  .flip-card-front, .flip-card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden; /* Safari */
-    backface-visibility: hidden;
-  }
-  
-  /* Style the front side (fallback if image is missing) */
-  .flip-card-front {
-    background-color: rgb(8, 0, 0);
-    color: black;
-    border-radius: 8px;
-  }
-  
-  
-  /* Style the back side */
-  .flip-card-back {
-    background-color: #FF013C;
-    color: white;
-    border-radius: 8px;
-    text-align: center;
-    transform: rotateY(180deg);
-  }
-
-.playButton {
+.cards button {
   appearance: button;
   background-color: #000;
   background-image: none;
@@ -99,7 +22,7 @@
   line-height: 20px;
   margin: 0 5px 10px 0;
   overflow: visible;
-  padding: 12px 40px;
+  padding: 6px 34px;
   text-align: center;
   text-transform: none;
   touch-action: manipulation;
@@ -109,52 +32,174 @@
   white-space: nowrap;
 }
 
-.playButton:focus {
+.cards button:focus {
   text-decoration: none;
 }
 
-.playButton:hover {
+.cards button:hover {
   text-decoration: none;
 }
 
-.playButton:active {
+.cards button:active {
   box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
   outline: 0;
 }
 
-.playButton:not([disabled]):active {
-  box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+.cards button:not([disabled]):active {
+  box-shadow: black 2px 2px 0 0, #000 2px 2px 0 1px;
   transform: translate(2px, 2px);
 }
 
 @media (min-width: 768px) {
-  .playButton {
+  .cards button {
     padding: 12px 50px;
   }
 }
 
-.mainHome {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translateX(-50%) translateY(calc(-50% - .5px));
+.cards .four {
+  visibility: hidden;
+}
+.cards .three {
+  visibility: hidden;
 }
 
 
-.mainHome input {
+.mainHome img {
+  border-radius: 0;
+}
+@media screen and (max-width: 415px){
+  .container {
+  display: flex;
+  flex-direction: column;
+  }
+}
+
+
+:root {
+  --surface-color: #FF013C;
+  --curve: 40;
+}
+
+
+
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 4rem 5vw;
+  padding: 0;
+  list-style-type: none;
+}
+
+.card {
   position: relative;
-  top:120px;
+  display: block;
+  height: 100%;
+  cursor: auto;
+  width:  100%;
+  border-radius: calc(var(--curve) * 1px);
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: black 0px 3px 8px;
 }
 
-.flip-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
+.card__image {      
+  width: 100%;
+  height: auto;
 }
 
+.card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;      
+  border-radius: calc(var(--curve) * 1px);    
+  background-color: var(--surface-color);      
+  transform: translateY(20%);
+  transition: .2s ease-in-out;
+}
+
+.card:hover .card__overlay {
+  /*transform: translateY(0);*/
+}
+
+
+
+
+.card__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  padding: 2em;
+  border-radius: calc(var(--curve) * 1px) 0 0 0;    
+  background-color: var(--surface-color);
+  /*transform: translateY(-100%);*/
+  transition: .2s ease-in-out;
+}
+
+.card__arc {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  bottom: 100%;
+  right: 0;      
+  z-index: 1;
+}
+
+.card__arc path {
+  fill: var(--surface-color);
+ 
+}       
+
+/*.card:hover .card__header {
+  transform: translateY(0);
+}*/
+
+
+.card__thumb {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;      
+  border-radius: 50%;      
+}
+
+.card__title {
+  font-size: 1em;
+  margin: 0 0 .3em;
+  color: white;
+}
+
+.card__tagline {
+  display: block;
+  margin: 1em 0;
+  font-family: "MockFlowFont";  
+  font-size: .8em; 
+  color: #D7BDCA;  
+}
+
+.card__status {
+  font-size: .8em;
+  color: #D7BDCA;
+}
+
+.card__description {
+  padding: 0 2em 2em;
+  margin: 0;
+  color: #D7BDCA;
+  font-family: "MockFlowFont";   
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
 
 
 

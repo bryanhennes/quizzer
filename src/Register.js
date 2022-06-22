@@ -43,6 +43,7 @@ export default function Register() {
 
     const handleSubmit = event => {
       event.preventDefault()
+      toast('Almost there...enter your name and create a username to start playing!');
       register();
       event.target.reset();
     }
@@ -50,7 +51,7 @@ export default function Register() {
     const handleFinalSubmit = event => {
       event.preventDefault()
       if(newName === "" || newUn === ""){
-        toast('Cannot leave fields blank')
+        toast('Cannot leave fields blank');
       }
       else {
         createUser();
@@ -131,11 +132,11 @@ export default function Register() {
     <form className="form" onSubmit={handleFinalSubmit}>
       <div className="form-control">
         <label htmlFor="name">Name:</label>
-        <input id="name" type="text" autoComplete="off" onChange={e => setNewName(e.target.value)}/>
+        <input id="name" type="text" onChange={e => setNewName(e.target.value)}/>
       </div>
       <div className="form-control">
         <label htmlFor="username">Username:</label>
-        <input id="username" autoComplete="off" type="text" onChange={e => setNewUn(e.target.value)}/>
+        <input id="username" type="text" onChange={e => setNewUn(e.target.value)}/>
       </div>
       <div className="form-control">
         <button type ='submit' className="btn-sign-up">Save</button>
@@ -146,8 +147,8 @@ export default function Register() {
 
         <div className="toast">
         <ToastContainer
-          position="top-center"
-          autoClose={2000}
+          position="center"
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
