@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route, Routes, Switch, Link, useNavigate, Navigate } from "react-router-dom";
 import { db, auth, realDb } from "./firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut }  from "firebase/auth";
-import {getDatabase, ref, set, child, update, remove, onValue, get, query, limitToLast, orderByChild} from "firebase/database";
+import {getDatabase, ref, set, child, update, remove, onValue, get, query, where, limitToLast, orderByChild, orderByValue} from "firebase/database";
 import pic from './pokeball.png';
 import moment from "react-moment";
 import Stylesheet from './PokeStyleSheet';
@@ -58,6 +58,8 @@ let navigate = useNavigate();
 const [seconds, setSeconds] = useState(0);
 const [minutes, setMinutes] = useState(5);
 const [isActive, setIsActive] = useState(false);
+const [pastChoices, setPastChoices] = useState([]);
+
 
 
   function toggle() {
@@ -125,12 +127,20 @@ const getRandomSelection = (collection) => {
   //display randomly selected pokemon
   const displayPokemon = () => {
     const selection = getRandomSelection(finalImageMap);
-    console.log(selection);
+    if(pastChoices.includes(selection)){
+      //displayPokemon();
+      console.log(`${selection} is already selected`);
+      displayPokemon();
+    }
+    else{
     setImgSrc(finalImageMap[selection]);
     setName(selection);
     setTimeout(() => {
       getChoices(selection);
     }, 150);
+    setPastChoices(current => [...current, selection])
+    console.log(pastChoices);
+  }
   }
 
 //when pokemon page first loads, grab all download urls from pokemon images in firebase storage
@@ -167,11 +177,21 @@ const getRandomSelection = (collection) => {
 
 const getChoices = async (currentSelection) => {
   let choices = [currentSelection, getRandomSelection(finalImageMap), getRandomSelection(finalImageMap), getRandomSelection(finalImageMap)];
+  //make sure there are no repeating values
+  const counts = {};
+  for (const num of choices) {
+    counts[num] = counts[num] ? counts[num] + 1 : 1;
+  }
+  if(counts[choices[0]] !== 1 || counts[choices[1]] !== 1 || counts[choices[2]] !== 1 || counts[choices[3]] !== 1){
+    getChoices(currentSelection);
+  }
+  else{
   choices = choices.sort(() => Math.random() - 0.5);
   setBtn1Text(choices[0]);
   setBtn2Text(choices[1]);
   setBtn3Text(choices[2]);
   setBtn4Text(choices[3]);
+  }
 
 }
 
@@ -184,7 +204,7 @@ const clearChoices = async () => {
 
 //check if selected answer is correct
 const checkWinner = e => {
-  console.log(e.target.innerHTML);
+  e.preventDefault();
     if(isPlaying){
 
     if(e.target.innerHTML === pokeName){
@@ -215,15 +235,16 @@ const startGame = async () => {
     }
 
     else{
+    setPastChoices([]);
     setIsActive(true);
     setButtonText('End Game');
-    //populateUsers();
+    populateUsers();
     setStreak(0);
     setShowLeaderboards(false);
     setLastStreak(0);
     setPlaying(true);
     const selection = getRandomSelection(finalImageMap);
-    console.log(selection);
+    setPastChoices(current => [...current, selection])
     setImgSrc(finalImageMap[selection]);
     setName(selection);
     getChoices(selection);
@@ -236,12 +257,15 @@ const startGame = async () => {
 
   //show top ten users in terms of poke highscore
   const populateUsers = async () => {
-    const recentUsers = query(ref(realDb, 'users/'), orderByChild("poke_name_highscore", "desc"), limitToLast(10));
+    const recentUsers = query(ref(realDb, 'users/'));//, orderByChild("poke_name_highscore", "desc"), limitToLast(10));
     get(recentUsers)
     .then((snapshot)=> {
 
       snapshot.forEach(childSnapshot => {
         users.push(childSnapshot.val());
+        //console.log(childSnapshot.val().username);
+        //console.log(childSnapshot.val().poke_name_highscore);
+        //users[childSnapshot.val().username] = childSnapshot.val().poke_name_highscore;
       })
     })
     setUsers(users);
@@ -258,13 +282,9 @@ const getPreviousHighScore = async () => {
         setOldStreak(data?.poke_name_highscore);
       }
       else {
-        console.log('does not exist');
         //should set users poke highscore to 0 if it doesnt already exist in database
       }   
   })
-  if(oldStreak !== null){
-    console.log(oldStreak);
-  }
 }
 
 //if new highscore update users highscore in database
@@ -277,10 +297,11 @@ const setHighscore = async () => {
 //open summary dialog
 const handleOpen = () => {
     clearChoices();
+    users.sort((a, b) => (a.poke_name_highscore < b.poke_name_highscore) ? 1 : -1);
     if(streak > oldStreak)
       setHighscore();
     //displayLeaderboards();
-    users.sort((a, b) => (a.poke_highscore < b.poke_highscore) ? 1 : -1);
+
     //alertNewBest();
     setOpen(true);
   };
@@ -335,7 +356,6 @@ const handleClose = () => {
       <h1>Name That Pokemon!</h1>
       <h2>Correct: {streak}</h2>
       <h2>Best: {oldStreak}</h2>
-      <h2>Time Remaining: { minutes }:{ seconds < 10 ? `0${ seconds }` : seconds }</h2>
       {/*<h2>Best Streak: {oldStreak}</h2>*/}
       <br></br>
       {(isDisabled) ? (
@@ -343,6 +363,7 @@ const handleClose = () => {
           ):(
             <button className="startGameButton" onClick={startGame}>{buttonText}</button>
         )}
+        <h2>Time Remaining: { minutes }:{ seconds < 10 ? `0${ seconds }` : seconds }</h2>
       
       {/*<div id="circular" class="circular">
         <div class="inner">
@@ -426,9 +447,9 @@ const handleClose = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {users.map((user)=>{
+            {users.slice(0, 10).map((user)=>{
               return (
-                <h1 id="leaderboard-display">{`${user.username}: ${user.poke_highscore}`}</h1>
+                <h1 id="leaderboard-display">{`${user.username}: ${user.poke_name_highscore}`}</h1>
               );
             })}
           </DialogContentText>

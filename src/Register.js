@@ -71,6 +71,7 @@ export default function Register() {
         email: user?.email,
         joindate: date, 
         poke_highscore: 0,
+        poke_name_highscore: 0,
       })
       navigate('/Home');
     };

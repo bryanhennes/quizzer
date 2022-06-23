@@ -485,11 +485,11 @@ html, body {
     outline: 0;
   }
 
-  .card-poke-name button:focus{
+  /*.card-poke-name button:focus{
     color: #fff;
     outline: 0;
   }
-
+*/
   .card-poke-name button {
     border-color: #FF013C;
     color: #fff;
@@ -498,7 +498,7 @@ html, body {
     
   }
 
-  .card-poke-name button:hover {
+  /*.card-poke-name button:hover {
     box-shadow: 0 0 10px 0 #FF013C inset, 0 0 10px 4px #FF013C;
-  }
+  }*/
   

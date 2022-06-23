@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import Stylesheet from "./Stylesheet";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 
 
@@ -12,6 +13,8 @@ export default function Login() {
   const [loginEmail, setloginEmail] = useState("");
   const [loginPassword, setloginPassword] = useState("");
   let navigate = useNavigate();
+  const analytics = getAnalytics();
+
 
 
   //translate firebase error codes to more readable messages
@@ -35,6 +38,8 @@ export default function Login() {
   const login = async () => {
     try{
       const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      //const method = signInWithEmailAndPassword(user);
+      //logEvent(analytics('login', {method}));
       console.log(user);
       navigate('/Home');
     }catch (error){
